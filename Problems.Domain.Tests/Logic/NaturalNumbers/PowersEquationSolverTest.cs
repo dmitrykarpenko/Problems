@@ -1,7 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Problems.Domain.Logic.NaturalNumbers.PowersEquationSolver;
+using Problems.Domain.Tests.Models;
 using Problems.Domain.Tests.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -15,23 +17,35 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
         {
             var max = 50;
           
-            var result1 = GenericUtil.Execute(() => new BrutePowersEquationSolver().GetSolutions(max).ToArray());
-            var result2 = GenericUtil.Execute(() => new CachingPowersEquationSolver().GetSolutions(max).ToArray());
+            var results = new List<ExecutionResult<(int, int, int, int)[]>>();
 
-            Assert.IsTrue(result1.TimeSpent > result2.TimeSpent);
+            results.Add(GenericUtil.Execute(() => new BrutePowersEquationSolver().GetSolutions(max).ToArray()));
+            results.Add(GenericUtil.Execute(() => new GroupingPowersEquationSolver().GetSolutions(max).ToArray()));
+            results.Add(GenericUtil.Execute(() => new CtciPowersEquationSolver().GetSolutions(max).ToArray()));
 
-            Assert.AreEqual(result1.Result.Count(), result2.Result.Count());
+            Assert.IsTrue(results[0].TimeSpent > results[1].TimeSpent);
 
-            var count = result1.Result.Count();
+            for (int i = 0; i < results.Count; i++)
+                Debug.WriteLine(results[i], $"Result #{i} ");
 
-            var solutions1 = result1.Result.Distinct().ToArray();
-            var solutions2 = result2.Result.Distinct().ToHashSet();
+            Assert.AreEqual(results[0].Result.Count(), results[1].Result.Count());
+            Assert.AreEqual(results[1].Result.Count(), results[2].Result.Count());
+
+            var count = results[0].Result.Count();
+
+            var solutions1 = results[0].Result.Distinct().ToArray();
+            var solutions2 = results[1].Result.Distinct().ToHashSet();
+            var solutions3 = results[2].Result.Distinct().ToHashSet();
 
             Assert.AreEqual(count, solutions1.Count());
             Assert.AreEqual(count, solutions2.Count());
+            Assert.AreEqual(count, solutions3.Count());
 
             foreach (var solution in solutions1)
+            {
                 Assert.IsTrue(solutions2.Contains(solution));
+                Assert.IsTrue(solutions3.Contains(solution));
+            }
         }
     }
 }
