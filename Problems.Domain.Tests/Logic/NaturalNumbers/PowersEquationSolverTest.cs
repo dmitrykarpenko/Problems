@@ -13,7 +13,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
     public class PowersEquationSolverTest
     {
         [TestMethod]
-        public void GetSolutionsTest()
+        public void GetSolutionsAllTest()
         {
             var max = 50;
           
@@ -46,6 +46,28 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
                 Assert.IsTrue(solutions2.Contains(solution));
                 Assert.IsTrue(solutions3.Contains(solution));
             }
+        }
+
+        [TestMethod]
+        public void GetSolutionsOneTest()
+        {
+            var max = 100;
+
+            var results = new List<ExecutionResult<(int, int, int, int)>>();
+            
+            results.Add(GenericUtil.Execute(() => new GroupingPowersEquationSolver().GetSolutions(max)
+                .Skip(10)
+                .Take(1)
+                .FirstOrDefault()));
+            results.Add(GenericUtil.Execute(() => new CtciPowersEquationSolver().GetSolutions(max)
+                .Skip(10)
+                .Take(1)
+                .FirstOrDefault()));
+
+            for (int i = 0; i < results.Count; i++)
+                Debug.WriteLine(results[i], $"Result #{i} ");
+
+            Assert.AreEqual(results[0].Result, results[1].Result);
         }
     }
 }
