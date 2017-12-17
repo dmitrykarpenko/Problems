@@ -30,6 +30,8 @@ namespace Problems.Domain.Tests.Logic.PowersEquationSolver
                 if (item == permutetionString)
                     itemIndex = i;
 
+                Assert.AreEqual(item.Length, permutetionString.Length);
+
                 // to watch the debug values more easy
                 permutations[i] = permutetionString;
             }
