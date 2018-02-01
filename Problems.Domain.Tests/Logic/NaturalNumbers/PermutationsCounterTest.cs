@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Problems.Domain.Tests.Logic.PowersEquationSolver
+namespace Problems.Domain.Tests.Logic.NaturalNumbers
 {
     [TestClass]
-    public class PowersEquationSolverTest
+    public class PermutationsCounterTest
     {
         [TestMethod]
         public void GetPermutationsTest()
