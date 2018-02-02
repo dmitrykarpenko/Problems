@@ -42,15 +42,23 @@ namespace Problems.Domain.Logic.Strings.PatternMatcher
 
             var firstPatternPart = patternParts[firstPatternPartIndex];
 
-            var indices = FindIndices(input, firstInputCharIndex, firstPatternPart, anyStart ? int.MaxValue : 1);
+            var indices = FindIndices(input, firstInputCharIndex, firstPatternPart,
+                anyStart ? int.MaxValue :
+                1);
 
             foreach (var index in indices)
             {
                 if (!anyStart && index > firstInputCharIndex)
-                    return false;
+                    continue;
 
-                var isMatch = IsMatchRecursive(input, index + firstPatternPart.Length,
-                    patternParts, firstPatternPartIndex + 1,
+                var nextFirstInputCharIndex = index + firstPatternPart.Length;
+                var nextFirstPatternPartIndex = firstPatternPartIndex + 1;
+                //var nextPatternPartsSumLength = SumLength(patternParts, nextFirstPatternPartIndex);
+                //if (nextFirstInputCharIndex + nextPatternPartsSumLength >= input.Length)
+                //    continue;
+
+                var isMatch = IsMatchRecursive(input, nextFirstInputCharIndex,
+                    patternParts, nextFirstPatternPartIndex,
                     true, anyEnd);
 
                 if (isMatch)
@@ -71,6 +79,16 @@ namespace Problems.Domain.Logic.Strings.PatternMatcher
                     return indices.ToArray();
             }
             return indices.ToArray();
+        }
+
+        private static int SumLength(string[] patternParts, int firstPatternPartIndex)
+        {
+            var sumLength = 0;
+            for (var patternPartIndex = firstPatternPartIndex; patternPartIndex < patternParts.Length; ++patternPartIndex)
+            {
+                sumLength += patternParts[patternPartIndex].Length;
+            }
+            return sumLength;
         }
 
         private static bool IsExactMatch(string input, int firstInputCharIndex, string patternPart)
