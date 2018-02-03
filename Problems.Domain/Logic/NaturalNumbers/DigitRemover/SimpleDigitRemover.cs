@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Problems.Domain.Utils;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +36,14 @@ namespace Problems.Domain.Logic.NaturalNumbers.DigitRemover
             else
                 largestCharsIndices = charInfos
                     .OrderBy(ci =>
-                        new StringNaturalNumber(RemoveAt(inputCharArray, ci.Index)))
+                        //new string(RemoveAt(inputCharArray, ci.Index))
+                        //new StringNaturalNumber(RemoveAt(inputCharArray, ci.Index))
+                        new StringNaturalNumber(inputCharArray, ci.Index)
+                        )
                     .Take(k)
                     .Select(ci => ci.Index);
 
-            var result = ToString(RemoveAt(input.ToCharArray(), largestCharsIndices));
+            var result = ToString(GenericUtil.RemoveAt(input.ToCharArray(), largestCharsIndices));
 
             result = result.TrimStart(zero);
             if (result == string.Empty)
@@ -83,30 +87,8 @@ namespace Problems.Domain.Logic.NaturalNumbers.DigitRemover
 
         private static char[] RemoveAt(char[] input, int index)
         {
-            return RemoveIf(input, (t, i) => i == index).ToArray();
-        }
-        private static IEnumerable<T> RemoveAt<T>(T[] input, int index)
-        {
-            return RemoveIf(input, (t, i) => i == index);
+            return GenericUtil.RemoveIf(input, (t, i) => i == index).ToArray();
         }
 
-        private static IEnumerable<T> RemoveAt<T>(T[] input, IEnumerable<int> indices)
-        {
-            var indicesSet = new HashSet<int>(indices);
-            return RemoveIf(input, (t, i) => indicesSet.Contains(i));
-        }
-
-        private static IEnumerable<T> RemoveIf<T>(T[] input, Func<T, int, bool> condition,
-            int maxRemovedCount = int.MaxValue)
-        {
-            var removedCount = 0;
-            for (int i = 0; i < input.Length; ++i)
-            {
-                if (!condition(input[i], i) || removedCount >= maxRemovedCount)
-                    yield return input[i];
-                else
-                    ++removedCount;
-            }
-        }
     }
 }
