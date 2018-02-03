@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,36 +11,41 @@ namespace Problems.Domain.Logic.NaturalNumbers.CoinCounter
     {
         public int CoinChange(int[] coins, int amount)
         {
+            _minCoinsCount = int.MaxValue;
+
             coins = coins.OrderByDescending(c => c).ToArray();
             return GetCoinCount(coins, amount, 0);
         }
 
-        public static int GetCoinCount(IEnumerable<int> descendingCoins, int amount, int priorCoinCount)
+        private int _minCoinsCount = int.MaxValue;
+
+        private int GetCoinCount(IEnumerable<int> descendingCoins, int amount, int priorCoinCount)
         {
+            if (amount == 0)
+                return priorCoinCount;
+
             var firstCoin = descendingCoins.FirstOrDefault();
-            if (firstCoin == 0) // no coin options left
-                if (amount == 0)
-                    return priorCoinCount;
-                else
-                    return -1;
+            if (firstCoin == 0) // no coin options left and amount is not zero
+                return -1;
 
             var maxFirstCoinCount = amount / firstCoin;
-            if (maxFirstCoinCount == 0)
-            {
-                return GetCoinCount(descendingCoins.Skip(1), amount, priorCoinCount);
-            }
+            if (priorCoinCount + maxFirstCoinCount >= _minCoinsCount) // even the best option is worse than _minCoinsCount
+                return -1;
 
             for (int firstCoinCount = maxFirstCoinCount; firstCoinCount >= 0; --firstCoinCount)
             {
+                var nextDescendingCoins = descendingCoins.Skip(1)
+                    .ToArray();
                 var nextAmount = amount - firstCoin * firstCoinCount;
                 var nextPriorCoinCount = priorCoinCount + firstCoinCount;
 
-                var coinsCount = GetCoinCount(descendingCoins.Skip(1), nextAmount, nextPriorCoinCount);
-                if (coinsCount >= 0)
-                    return coinsCount;
+                var coinsCount = GetCoinCount(nextDescendingCoins, nextAmount, nextPriorCoinCount);
+
+                if (0 <= coinsCount && coinsCount < _minCoinsCount)
+                    _minCoinsCount = coinsCount;
             }
 
-            return -1;
+            return _minCoinsCount < int.MaxValue ? _minCoinsCount : -1;
         }
     }
 }

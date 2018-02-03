@@ -21,9 +21,45 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
             {
                 new
                 {
+                    Coins = new[] { 186, 419, 83, 408 },
+                    Amount = 6249,
+                    Output = 20,
+                },
+                new
+                {
+                    Coins = new[] { 2147483647 },
+                    Amount = 2,
+                    Output = -1,
+                },
+                new
+                {
+                    Coins = new[] { 227, 99, 328, 299, 42, 322 },
+                    Amount = 9847,
+                    Output = 31,
+                },
+                new
+                {
+                    Coins = new[] { 411, 377, 14, 456, 434 },
+                    Amount = 6892,
+                    Output = 16,
+                },
+                new
+                {
+                    Coins = new[] { 3, 7, 405, 436 },
+                    Amount = 8839,
+                    Output = 25,
+                },
+                new
+                {
                     Coins = new[] { 1, 2, 5 },
                     Amount = 11,
                     Output = 3,
+                },
+                new
+                {
+                    Coins = new[] { 2 },
+                    Amount = 3,
+                    Output = -1,
                 },
             };
 
