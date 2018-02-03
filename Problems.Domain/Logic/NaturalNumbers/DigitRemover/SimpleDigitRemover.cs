@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,6 @@ namespace Problems.Domain.Logic.NaturalNumbers.DigitRemover
         public string RemoveKdigits(string num, int k)
         {
             return GetMinNum(num, k);
-
-            //var indexOfZero = num.IndexOf(zero);
-
-            //if (indexOfZero < 0 || indexOfZero > k)
-            //    ;
-
-            //var result = ToString(RemoveIf(num.ToCharArray(), (c, i) => c == zero, k));
-            //return result;
         }
 
         private static string GetMinNum(string input, int k)
@@ -31,44 +24,29 @@ namespace Problems.Domain.Logic.NaturalNumbers.DigitRemover
             if (k == 0)
                 return input;
 
+            IEnumerable<int> largestCharsIndices;
+            var inputCharArray = input.ToCharArray();
+
             var charInfos = GetCharInfos(input, true);
-            var largestCharsIndices = charInfos
-                //.OrderByDescending(ci => LossIfRemoved(input, ci.Index))
-                .OrderBy(ci =>
-                    new StringNaturalNumber(RemoveAt(input.ToCharArray(), ci.Index).ToArray()))
-                .Take(1)
-                .Select(ci => ci.Index);
+            var nonZeroCharInfos = charInfos.Where(ci => ci.Item != zero);
+            if (nonZeroCharInfos.Count() == k)
+                largestCharsIndices = nonZeroCharInfos
+                    .Select(ci => ci.Index);
+            else
+                largestCharsIndices = charInfos
+                    .OrderBy(ci =>
+                        new StringNaturalNumber(RemoveAt(inputCharArray, ci.Index)))
+                    .Take(k)
+                    .Select(ci => ci.Index);
 
             var result = ToString(RemoveAt(input.ToCharArray(), largestCharsIndices));
-            return GetMinNum(result, k-1);
+
+            result = result.TrimStart(zero);
+            if (result == string.Empty)
+                return result + zero;
+
+            return result;
         }
-
-        //private static NumberPart LossIfRemoved(string input, int index)
-        //{
-        //    var digit = (byte)char.GetNumericValue(input[index]);
-
-        //    var loss = new NumberPart
-        //    {
-        //        Value = digit,
-        //        QuanOfZeros = input.Length - index,
-        //    };
-
-        //    if (index > 0)
-        //    {
-
-
-        //        var previousIndex = index - 1;
-        //        var replacingDigit = (byte)char.GetNumericValue(input[previousIndex]);
-        //        loss -= new NumberPart
-        //        {
-        //            Value = replacingDigit,
-        //            QuanOfZeros = input.Length - index,
-        //        };
-        //    }
-
-        //    return loss;
-        //}
-
         
         private class CharDigitInfo : ItemInfo<Char>
         {
@@ -102,6 +80,11 @@ namespace Problems.Domain.Logic.NaturalNumbers.DigitRemover
             return new string(chars.ToArray());
         }
 
+
+        private static char[] RemoveAt(char[] input, int index)
+        {
+            return RemoveIf(input, (t, i) => i == index).ToArray();
+        }
         private static IEnumerable<T> RemoveAt<T>(T[] input, int index)
         {
             return RemoveIf(input, (t, i) => i == index);
