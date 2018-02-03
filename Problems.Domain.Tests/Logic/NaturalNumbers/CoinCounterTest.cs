@@ -15,7 +15,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
         public void CoinChangeTest()
         {
             // Arrange:
-            ICoinCounter coinCounter = new SimpleCoinCounter();
+            ICoinCounter coinCounter = new RecursiveCoinCounter();
 
             var inputObjects = new[]
             {

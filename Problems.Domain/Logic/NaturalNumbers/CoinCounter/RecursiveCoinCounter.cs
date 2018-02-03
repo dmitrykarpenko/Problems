@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.NaturalNumbers.CoinCounter
 {
-    public class SimpleCoinCounter : ICoinCounter
+    public class RecursiveCoinCounter : ICoinCounter
     {
         public int CoinChange(int[] coins, int amount)
         {
