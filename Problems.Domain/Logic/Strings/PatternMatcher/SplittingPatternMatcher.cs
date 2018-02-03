@@ -34,7 +34,7 @@ namespace Problems.Domain.Logic.Strings.PatternMatcher
 
         /// <param name="patternParts">each patternPart will not contain sequenceWildcard (*) - only charWildcard (?)</param>
         private static bool IsMatchRecursive(string input, int firstInputCharIndex,
-            string[] patternParts, int firstPatternPartIndex, 
+            string[] patternParts, int firstPatternPartIndex,
             bool anyStart, bool anyEnd)
         {
             if (firstPatternPartIndex == patternParts.Length)
