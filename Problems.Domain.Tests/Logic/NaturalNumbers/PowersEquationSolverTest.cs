@@ -15,7 +15,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
         [TestMethod]
         public void GetSolutionsAllTest()
         {
-            var max = 50;
+            var max = 20;
           
             var results = new List<ExecutionResult<(int, int, int, int)[]>>();
 
