@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Problems.Domain.Tests.Logic.NaturalNumbers
 {
     [TestClass]
-    public class SubarraySumChecker
+    public class SubarraySumCheckerTest
     {
         [TestMethod]
         public void ReversePairsTest()
@@ -19,24 +19,60 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
 
             var inputObjects = new[]
             {
-                //new
-                //{
-                //    Input = new
-                //    {
-                //        Array = new[] { 23, 2, 4, 6, 7 },
-                //        K = 6,
-                //    },
-                //    Output = true,
-                //},
-                //new
-                //{
-                //    Input = new
-                //    {
-                //        Array = new[] { 23, 2, 6, 4, 7 },
-                //        K = 6,
-                //    },
-                //    Output = true,
-                //},
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 1, 1, 29 },
+                        K = 6,
+                    },
+                    Output = true,
+                },
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 0 },
+                        K = 5,
+                    },
+                    Output = false,
+                },
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 23, 2, 4, 6, 7 },
+                        K = 6,
+                    },
+                    Output = true,
+                },
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 23, 2, 6, 4, 7 },
+                        K = 6,
+                    },
+                    Output = true,
+                },
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 23, 2 },
+                        K = 27,
+                    },
+                    Output = false,
+                },
+                new
+                {
+                    Input = new
+                    {
+                        Array = new[] { 2, 2 },
+                        K = 4,
+                    },
+                    Output = true,
+                },
                 new
                 {
                     Input = new
