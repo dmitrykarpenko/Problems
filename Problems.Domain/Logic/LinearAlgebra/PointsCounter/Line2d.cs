@@ -55,6 +55,8 @@ namespace Problems.Domain.Logic.LinearAlgebra.PointsCounter
             return false;
         }
 
+        public override int GetHashCode() => A.GetHashCode() ^ B.GetHashCode();
+
         public override string ToString() => $"y = {A}x + {B}";
     }
 }

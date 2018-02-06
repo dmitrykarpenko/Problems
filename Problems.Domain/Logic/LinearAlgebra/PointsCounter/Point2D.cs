@@ -31,6 +31,8 @@ namespace Problems.Domain.Logic.LinearAlgebra.PointsCounter
             return false;
         }
 
+        public override int GetHashCode() => x.GetHashCode() ^ x.GetHashCode();
+
         public override string ToString() => $"({x}, {y})";
     }
 }
