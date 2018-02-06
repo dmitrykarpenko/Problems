@@ -27,20 +27,20 @@ namespace Problems.Domain.Tests.Logic.LinearAlgebra
                     },
                     Output = 1,
                 },
-                //new
-                //{
-                //    Input = new[]
-                //    {
-                //        new Point2D { x  = 1, y = 2 },
-                //        new Point2D { x  = 2, y = 4 },
-                //        new Point2D { x  = 4, y = 8 },
-                //        new Point2D { x  = 5, y = 9 },
-                //        new Point2D { x  = 0, y = -1 },
-                //        new Point2D { x  = 10, y = 0 },
-                //        new Point2D { x  = 0, y = 0 },
-                //    },
-                //    Output = 4,
-                //},
+                new
+                {
+                    Input = new[]
+                    {
+                        new Point2D { x  = 1, y = 2 },
+                        new Point2D { x  = 2, y = 4 },
+                        new Point2D { x  = 4, y = 8 },
+                        new Point2D { x  = 5, y = 9 },
+                        new Point2D { x  = 0, y = -1 },
+                        new Point2D { x  = 10, y = 0 },
+                        new Point2D { x  = 0, y = 0 },
+                    },
+                    Output = 4,
+                },
             };
 
             foreach (var inputObject in inputObjects)
