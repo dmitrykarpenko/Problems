@@ -42,6 +42,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
                 // Act:
                 var output = reversePairsCounter.ReversePairs(inputObject.Input);
 
+                // TODO: fix logic first
                 //// Assert:
                 //Assert.AreEqual(inputObject.Output, output);
             }
