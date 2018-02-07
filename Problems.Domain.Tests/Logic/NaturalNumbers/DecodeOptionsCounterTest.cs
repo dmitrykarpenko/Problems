@@ -21,12 +21,57 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
             {
                 new
                 {
-                    Input = "ABAB",
+                    Input = "301",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "230",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "100",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "111",
+                    Output = 3,
+                },
+                new
+                {
+                    Input = "011",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "001",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "01",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "0",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "",
+                    Output = 0,
+                },
+                new
+                {
+                    Input = "1212",
                     Output = 5,
                 },
                 new
                 {
-                    Input = "AB",
+                    Input = "11",
                     Output = 2,
                 },
             };
