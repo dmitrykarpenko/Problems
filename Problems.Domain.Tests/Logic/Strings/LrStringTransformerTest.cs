@@ -29,11 +29,11 @@ namespace Problems.Domain.Tests.Logic.Strings
 
             foreach (var inputObject in inputObjects)
             {
-                //// Act:
-                //var output = lrStringTransformer.CanTransform(inputObject.Initial, inputObject.Final);
+                // Act:
+                var output = lrStringTransformer.CanTransform(inputObject.Initial, inputObject.Final);
 
-                //// Assert:
-                //Assert.AreEqual(inputObject.Output, output);
+                // Assert:
+                Assert.AreEqual(inputObject.Output, output);
             }
         }
     }

@@ -31,5 +31,19 @@ namespace Problems.Domain.Utils
                     ++removedCount;
             }
         }
+
+        public static bool AreEqual<T>(IEnumerable<T> first, IEnumerable<T> second)
+        {
+            var firstEnumerator = first.GetEnumerator();
+            var secondEnumerator = second.GetEnumerator();
+
+            while (firstEnumerator.MoveNext() && secondEnumerator.MoveNext())
+            {
+                if (!EqualityComparer<T>.Default.Equals(firstEnumerator.Current, secondEnumerator.Current))
+                    return false;
+            }
+
+            return !firstEnumerator.MoveNext() && !secondEnumerator.MoveNext();
+        }
     }
 }
