@@ -21,10 +21,38 @@ namespace Problems.Domain.Tests.Logic.Strings
             {
                 new
                 {
+                    Initial = "XLLR",
+                    Final = "LXLX",
+                    Output = false,
+                },
+                new
+                {
                     Initial = "RXXLRXRXL",
                     Final = "XRLXXRRLX",
                     Output = true,
                 },
+                new
+                {
+                    Initial = "RXXXXXXXXXXXRLXLXLRLRRXLXRLXRLRLLRXLXRLXRLXRLRLXXLLRLXLXLRLRLRXLRXLXRLRLRXLXRLXLXLRLLLLRXLLLXRLXRLRXLRLRLLRXLXRXRLRLRLRLRXXXXLXRXLRLXLXLXRLXLRXLRXLXRLLRXXLRLXRLRLRXXXXXXLRXRXLX",
+                    Final = "RXXXXXXXXXXXRLXLXLRLRRXLXRLXRLRLLRXLXRLXRLXRLRLXXLLRLXLXLRLRLRXLRXLXRLRLRXLXRLXLXLRLLLLRXLLLXRLXRLRXLRLRLLRXLXRXRLRLRLRLRXXXXLXRXLRLXLXLXRLXLRXLRXLXRLLRXXLRLXRLRLRXXXXXXLRXRXLX",
+                    Output = true,
+                },
+                new
+                {
+                    Initial = "RRXXXXXXXXXXXLXLXLRLRRXLXRLXRLRLLRXLXRLXRLXRLRLXXLLRLXLXLRLRLRXLRXLXRLRLRXLXRLXLXLRLLLLRXLLLXRLXRLRXLRLRLLRXLXRXRLRLRLRLRXXXXLXRXLRLXLXLXRLXLRXLRXLXRLLRXXLRLXRLRLRXXXXXXLRXRXLX",
+                    Final = "RXXXXRXXXXXXXLXLXLRLRRXLXRLXRLRLLRXLXRLXRLXRLRLXXLLRLXLXLRLRLRXLRXLXRLRLRXLXRLXLXLRLLLLRXLLLXRLXRLRXLRLRLLRXXLRXRLRLRLRLRXXXXLXRXLRLXLXLXRLXLRXLRXLXRLLRXXLRLXRLRLRXXXXXXLXRRXLX",
+                    Output = false,
+                },
+                new { Initial = "RXXLRXRXLX", Final = "XRLXXRRLX", Output = false, },
+                new { Initial = "XXXXRXL", Final = "XXXRXLX", Output = false, },
+                new { Initial = "X", Final = "", Output = false, },
+                new { Initial = "", Final = "", Output = true, },
+                new { Initial = "XXXXR", Final = "XXXRX", Output = false, },
+                new { Initial = "XXXXL", Final = "XXXLX", Output = true, },
+                new { Initial = "XXXXR", Final = "XXXXL", Output = false, },
+                new { Initial = "L", Final = "L", Output = true, },
+                new { Initial = "R", Final = "R", Output = true, },
+                new { Initial = "X", Final = "X", Output = true, },
             };
 
             foreach (var inputObject in inputObjects)

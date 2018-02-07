@@ -24,46 +24,53 @@ namespace Problems.Domain.Logic.Strings.LrStringTransformer
             if (initial == null || final == null || initial.Length != final.Length)
                 return false;
 
-            int initialLrCharIndex = 0,
-                finalLrCharIndex = 0;
-            return IsTransformPossible(
-                initial
-                    .Select(c => new LrCharInfo
+            return IsTransformPossible(ToLrCharInfos(initial), ToLrCharInfos(final));
+        }
+
+        private static IEnumerable<LrCharInfo> ToLrCharInfos(IEnumerable<char> chars)
+        {
+            var index = 0;
+            foreach (var c in chars)
+            {
+                if (IsCharLr(c))
+                {
+                    yield return new LrCharInfo
                     {
                         Char = c,
-                        Index = initialLrCharIndex++
-                    })
-                    .Where(IsCharLr),
-                final
-                    .Select(c => new LrCharInfo
-                    {
-                        Char = c,
-                        Index = finalLrCharIndex++
-                    })
-                    .Where(IsCharLr));
+                        Index = index,
+                    };
+                }
+                ++index;
+            }
         }
 
         private static bool IsCharLr(LrCharInfo ci) => IsCharLr(ci.Char);
         private static bool IsCharLr(char c) => c == 'L' || c == 'R';
 
-        private static bool IsTransformPossible(IEnumerable<LrCharInfo> first, IEnumerable<LrCharInfo> second)
+        private static bool IsTransformPossible(IEnumerable<LrCharInfo> initial, IEnumerable<LrCharInfo> final)
         {
-            var firstEnumerator = first.GetEnumerator();
-            var secondEnumerator = second.GetEnumerator();
+            var initialEnumerator = initial.GetEnumerator();
+            var finalEnumerator = final.GetEnumerator();
 
-            while (firstEnumerator.MoveNext() && secondEnumerator.MoveNext())
+            var initialHasNext = initialEnumerator.MoveNext();
+            var finalHasNext = finalEnumerator.MoveNext();
+
+            while (initialHasNext && finalHasNext)
             {
-                if (firstEnumerator.Current.Char != secondEnumerator.Current.Char)
+                if (initialEnumerator.Current.Char != finalEnumerator.Current.Char)
                     return false;
 
-                if (firstEnumerator.Current.Char == 'L' && firstEnumerator.Current.Index < secondEnumerator.Current.Index)
+                if (initialEnumerator.Current.Char == 'L' && initialEnumerator.Current.Index < finalEnumerator.Current.Index)
                     return false;
 
-                if (firstEnumerator.Current.Char == 'R' && firstEnumerator.Current.Index > secondEnumerator.Current.Index)
+                if (initialEnumerator.Current.Char == 'R' && initialEnumerator.Current.Index > finalEnumerator.Current.Index)
                     return false;
+
+                initialHasNext = initialEnumerator.MoveNext();
+                finalHasNext = finalEnumerator.MoveNext();
             }
-
-            return !firstEnumerator.MoveNext() && !secondEnumerator.MoveNext();
+            
+            return !initialHasNext && !finalHasNext;
         }
     }
 }
