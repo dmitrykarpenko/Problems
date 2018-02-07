@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Utils
 {
-    public class GenericUtil
+    public static class GenericUtil
     {
         public static IEnumerable<T> RemoveAt<T>(T[] input, int index)
         {
@@ -32,18 +32,24 @@ namespace Problems.Domain.Utils
             }
         }
 
-        public static bool AreEqual<T>(IEnumerable<T> first, IEnumerable<T> second)
+        public static bool IsEqual<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
             var firstEnumerator = first.GetEnumerator();
             var secondEnumerator = second.GetEnumerator();
 
-            while (firstEnumerator.MoveNext() && secondEnumerator.MoveNext())
+            var firstHasNext = firstEnumerator.MoveNext();
+            var secondHasNext = secondEnumerator.MoveNext();
+
+            while (firstHasNext && secondHasNext)
             {
                 if (!EqualityComparer<T>.Default.Equals(firstEnumerator.Current, secondEnumerator.Current))
                     return false;
+
+                firstHasNext = firstEnumerator.MoveNext();
+                secondHasNext = secondEnumerator.MoveNext();
             }
 
-            return !firstEnumerator.MoveNext() && !secondEnumerator.MoveNext();
+            return !firstHasNext && !secondHasNext;
         }
     }
 }
