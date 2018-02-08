@@ -10,6 +10,11 @@ namespace Problems.Domain.Logic.Strings.WordLadderCounter
     {
         public int LadderLength(string beginWord, string endWord, IList<string> wordList)
         {
+            return CountLadderLength(beginWord, endWord, wordList);
+        }
+
+        private static int CountLadderLength(string initial, string final, IList<string> wordList)
+        {
             throw new NotImplementedException();
         }
     }
