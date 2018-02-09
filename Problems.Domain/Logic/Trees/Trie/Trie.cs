@@ -37,20 +37,26 @@ namespace Problems.Domain.Logic.Trees.Trie
             return prefix.Depth == s.Length && prefix.FindChildNode('$') != null;
         }
 
-        public void InsertRange(List<string> items)
+        public void InsertRange(string[] items, Func<string, int, TNodeInfo> getNodeInfo)
         {
-            for (int i = 0; i < items.Count; i++)
-                Insert(items[i]);
+            for (int i = 0; i < items.Length; i++)
+                Insert(items[i], s => getNodeInfo(s, i));
         }
 
-        public void Insert(string s)
+        public void Insert(string s, Func<string, TNodeInfo> getNodeInfo)
         {
             var commonPrefix = Prefix(s);
             var current = commonPrefix;
 
             for (var i = current.Depth; i < s.Length; i++)
             {
-                var newNode = new TrieNode<TNodeInfo> { Value = s[i], Depth = current.Depth + 1, Parent = current };
+                var newNode = new TrieNode<TNodeInfo>
+                {
+                    Value = s[i],
+                    Depth = current.Depth + 1,
+                    Parent = current,
+                    Info = getNodeInfo(s),
+                };
                 current.Children.Add(newNode);
                 current = newNode;
             }

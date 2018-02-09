@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Problems.Domain.Logic.Trees.Trie;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,23 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
     {
         private readonly string[] _words;
 
+        private readonly Trie<WordInfo> _trie;
+        private readonly Trie<WordInfo> _trieOfReversed;
+
         public WordFilter(string[] words)
         {
             _words = words;
+
+            _trie = new Trie<WordInfo>();
+            _trie.InsertRange(_words,
+                (s, i) => new WordInfo { Weight = i });
+            _trieOfReversed.InsertRange(_words.Select(w => new string(w.Reverse().ToArray())).ToArray(),
+                (s, i) => new WordInfo { Weight = _words.Length - 1 - i });
         }
 
         public int F(string prefix, string suffix)
         {
-            return GetWordIndex(_words, prefix, suffix);
+            return GetWordIndex(prefix, suffix);
         }
 
         //class CharNode
@@ -29,7 +39,7 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
 
         //private CharNode GetTrie(string[] words)
         //{
-            
+
         //    for (int i = 0; i < words.Length; ++i)
         //    {
 
@@ -46,13 +56,13 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
         //    }
         //}
 
-        //class WordInfo
-        //{
-        //    //public string Word;
-        //    public int Weight;
-        //}
+        class WordInfo
+        {
+            //public string Word;
+            public int Weight;
+        }
 
-        public static int GetWordIndex(string[] words, string prefix, string suffix)
+        public static int GetWordIndex(string prefix, string suffix)
         {
             //words
             //    .Where(w => w.StartsWith(prefix) && w.EndsWith(prefix))
