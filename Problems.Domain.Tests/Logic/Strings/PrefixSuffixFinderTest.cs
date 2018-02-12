@@ -36,6 +36,7 @@ namespace Problems.Domain.Tests.Logic.Strings
                     Words = new string[] { },
                     Searches = new[]
                     {
+                        new { Prefix = "a", Suffix = "b", Output = -1, },
                         new { Prefix = "", Suffix = "", Output = -1, },
                         new { Prefix = (string)null, Suffix = (string)null, Output = -1, },
                     },
@@ -50,6 +51,9 @@ namespace Problems.Domain.Tests.Logic.Strings
                         new { Prefix = "on", Suffix = "ed", Output = -1, },
                         new { Prefix = "it", Suffix = "it", Output = 15, },
                         new { Prefix = "tie", Suffix = "tied", Output = -1, },
+                        new { Prefix = "timid", Suffix = "", Output = 490, },
+                        new { Prefix = "timid", Suffix = "timid", Output = 490, },
+                        new { Prefix = "", Suffix = "timid", Output = 490, },
                     },
                 },
             };
