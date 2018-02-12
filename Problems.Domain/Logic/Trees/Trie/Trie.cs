@@ -34,7 +34,12 @@ namespace Problems.Domain.Logic.Trees.Trie
             return result;
         }
 
-        public IEnumerable<TrieNode<TNodeInfo>> GetStartWith(string prefix)
+        /// <summary>
+        /// Gets terminal nodes which represent words that start with prefix
+        /// </summary>
+        /// <param name="prefix">The beginning of the wanted words</param>
+        /// <returns></returns>
+        public IEnumerable<TrieNode<TNodeInfo>> GetTerminalNodes(string prefix)
         {
             var prefixEndNode = GetPrefixEndNode(prefix);
             if (prefixEndNode.Depth < prefix.Length)
@@ -81,11 +86,11 @@ namespace Problems.Domain.Logic.Trees.Trie
                     Depth = current.Depth + 1,
                     Parent = current,
                 };
-                current.Children.Add(newNode);
+                current.AddChildNode(newNode);
                 current = newNode;
             }
 
-            current.Children.Add(new TrieNode<TNodeInfo>
+            current.AddOrUpdateChildNode(new TrieNode<TNodeInfo>
             {
                 Value = _end,
                 Depth = current.Depth + 1,

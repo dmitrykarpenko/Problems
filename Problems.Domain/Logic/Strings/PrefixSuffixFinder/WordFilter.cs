@@ -9,35 +9,38 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
 {
     public class WordFilter : IPrefixSuffixFinder
     {
-        private readonly string[] _words;
+        private string _prefix;
+        private string _reversedSuffix;
 
         private readonly Trie<WordInfo> _trie;
         private readonly Trie<WordInfo> _trieOfReversed;
 
         public WordFilter(string[] words)
         {
-            _words = words;
-
-
             _trie = new Trie<WordInfo>();
-            _trie.InsertRange(_words, WordInfo.Create);
-
-
-            var reversedWords = _words
-                .Select(w => new
-                {
-                    ReversedWord = new string(w.Reverse().ToArray()),
-                    OriginalWord = w,
-                })
-                .ToDictionary(x => x.ReversedWord, x => x.OriginalWord);
-
             _trieOfReversed = new Trie<WordInfo>();
-            _trieOfReversed.InsertRange(reversedWords.Keys.ToArray(), (s, i) => WordInfo.Create(reversedWords[s], i));
+
+
+            for (int i = 0; i < words.Length; ++i)
+            {
+                Func<string, WordInfo> getNodeInfo = s => WordInfo.Create(words[i], i);
+
+                _trie.Insert(words[i], getNodeInfo);
+
+                var reversedWord = new string(words[i].Reverse().ToArray());
+                _trieOfReversed.Insert(reversedWord, getNodeInfo);
+            }
         }
 
         public int F(string prefix, string suffix)
         {
-            return GetWordIndex(prefix, suffix);
+            if (prefix == null || suffix == null)
+                return -1;
+
+            _prefix = prefix;
+            _reversedSuffix = new string(suffix.Reverse().ToArray());
+
+            return GetWordIndex();
         }
 
 
@@ -68,13 +71,13 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
             }
         }
 
-        public int GetWordIndex(string prefix, string suffix)
+        public int GetWordIndex()
         {
-            var prefixWords = _trie.GetStartWith(prefix)
+            var prefixWords = _trie.GetTerminalNodes(_prefix)
                 .Select(ni => ni.Info)
                 .OrderByDescending(wi => wi.Weight);
 
-            var suffixWords = _trieOfReversed.GetStartWith(suffix)
+            var suffixWords = _trieOfReversed.GetTerminalNodes(_reversedSuffix)
                 .Select(ni => ni.Info)
                 .OrderByDescending(wi => wi.Weight);
 

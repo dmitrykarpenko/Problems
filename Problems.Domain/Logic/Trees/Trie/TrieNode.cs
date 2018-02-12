@@ -9,12 +9,14 @@ namespace Problems.Domain.Logic.Trees.Trie
     public class TrieNode<TInfo> : TrieNode
     {
         public TInfo Info { get; set; }
+        public int Count { get; set; }
     }
 
     public class TrieNode
     {
+        private List<TrieNode> Children { get; }
+
         public char Value { get; set; }
-        public List<TrieNode> Children { get; set; }
         public TrieNode Parent { get; set; }
         public int Depth { get; set; }
 
@@ -45,6 +47,38 @@ namespace Problems.Domain.Logic.Trees.Trie
                     return child;
 
             return null;
+        }
+
+        public void AddChildNode(TrieNode node)
+        {
+            TrieNode existingNode;
+            AddChildNode(node, out existingNode);
+        }
+
+        private void AddChildNode(TrieNode node, out TrieNode existingNode)
+        {
+            existingNode = FindChildNode(node.Value);
+            if (existingNode == null)
+            {
+                Children.Add(node);
+            }
+        }
+
+        public void AddOrUpdateChildNode<TInfo>(TrieNode<TInfo> node)
+        {
+            TrieNode existingNode;
+            AddChildNode(node, out existingNode);
+
+            if (existingNode != null)
+            {
+                var existingNodeWithInfo = existingNode as TrieNode<TInfo>;
+                if (existingNodeWithInfo != null)
+                {
+                    ++existingNodeWithInfo.Count;
+                }
+            }
+            // else if node exists and not terminal - leave as it is for now
+            // (it should not happen as TrieNode<TInfo> are only terminal nodes for now)
         }
 
         /// <summary>
