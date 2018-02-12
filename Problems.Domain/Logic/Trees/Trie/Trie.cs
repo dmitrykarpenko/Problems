@@ -8,14 +8,17 @@ namespace Problems.Domain.Logic.Trees.Trie
 {
     public class Trie<TNodeInfo>
     {
-        private readonly TrieNode<TNodeInfo> _root;
+        private const char _start = '^';
+        private const char _end = '$';
+
+        private readonly TrieNode _root;
 
         public Trie()
         {
-            _root = new TrieNode<TNodeInfo> { Value = '^', Depth = 0, Parent = null };
+            _root = new TrieNode { Value = _start, Depth = 0, Parent = null };
         }
 
-        public TrieNode<TNodeInfo> Prefix(string s)
+        public TrieNode GetPrefixEndNode(string s)
         {
             var currentNode = _root;
             var result = currentNode;
@@ -31,45 +34,72 @@ namespace Problems.Domain.Logic.Trees.Trie
             return result;
         }
 
-        public bool Search(string s)
+        public IEnumerable<TrieNode<TNodeInfo>> GetStartWith(string prefix)
         {
-            var prefix = Prefix(s);
-            return prefix.Depth == s.Length && prefix.FindChildNode('$') != null;
+            var prefixEndNode = GetPrefixEndNode(prefix);
+            if (prefixEndNode.Depth < prefix.Length)
+                yield break;
+
+            foreach (var terminalNode in prefixEndNode.FindChildNodeRecursive(_end))
+                yield return (TrieNode<TNodeInfo>)terminalNode;
+        }
+
+        //public bool Search(string s)
+        //{
+        //    TrieNode<TNodeInfo> nodeInfo = null;
+        //    return Search(s, ref nodeInfo);
+        //}
+
+        public bool Search(string s, ref TrieNode<TNodeInfo> terminalNode)
+        {
+            var prefixEndNode = GetPrefixEndNode(s);
+            if (prefixEndNode.Depth < s.Length)
+                return false;
+
+            terminalNode = (TrieNode<TNodeInfo>)prefixEndNode.FindChildNode(_end);
+            if (terminalNode == null)
+                return false;
+
+            return true;
         }
 
         public void InsertRange(string[] items, Func<string, int, TNodeInfo> getNodeInfo)
         {
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < items.Length; ++i)
                 Insert(items[i], s => getNodeInfo(s, i));
         }
 
         public void Insert(string s, Func<string, TNodeInfo> getNodeInfo)
         {
-            var commonPrefix = Prefix(s);
-            var current = commonPrefix;
+            var current = GetPrefixEndNode(s);
 
             for (var i = current.Depth; i < s.Length; i++)
             {
-                var newNode = new TrieNode<TNodeInfo>
+                var newNode = new TrieNode
                 {
                     Value = s[i],
                     Depth = current.Depth + 1,
                     Parent = current,
-                    Info = getNodeInfo(s),
                 };
                 current.Children.Add(newNode);
                 current = newNode;
             }
 
-            current.Children.Add(new TrieNode<TNodeInfo> { Value = '$', Depth = current.Depth + 1, Parent = current });
+            current.Children.Add(new TrieNode<TNodeInfo>
+            {
+                Value = _end,
+                Depth = current.Depth + 1,
+                Parent = current,
+                Info = getNodeInfo(s),
+            });
         }
 
         public void Delete(string s)
         {
-            if (Search(s))
+            TrieNode<TNodeInfo> terminalNode = null;
+            if (Search(s, ref terminalNode))
             {
-                var node = Prefix(s).FindChildNode('$');
-
+                TrieNode node = terminalNode;
                 while (node.IsLeaf())
                 {
                     var parent = node.Parent;

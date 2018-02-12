@@ -9,6 +9,9 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
     public interface IPrefixSuffixFinder
     {
         /// <summary>
+        /// https://leetcode.com/problems/prefix-and-suffix-search/description/
+        /// 745. Prefix and Suffix Search
+        /// 
         /// Given many words, words[i] has weight i.
         /// Design a class WordFilter that supports one function,
         /// WordFilter.f(String prefix, String suffix).

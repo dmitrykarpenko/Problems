@@ -18,11 +18,21 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
         {
             _words = words;
 
+
             _trie = new Trie<WordInfo>();
-            _trie.InsertRange(_words,
-                (s, i) => new WordInfo { Weight = i });
-            _trieOfReversed.InsertRange(_words.Select(w => new string(w.Reverse().ToArray())).ToArray(),
-                (s, i) => new WordInfo { Weight = _words.Length - 1 - i });
+            _trie.InsertRange(_words, WordInfo.Create);
+
+
+            var reversedWords = _words
+                .Select(w => new
+                {
+                    ReversedWord = new string(w.Reverse().ToArray()),
+                    OriginalWord = w,
+                })
+                .ToDictionary(x => x.ReversedWord, x => x.OriginalWord);
+
+            _trieOfReversed = new Trie<WordInfo>();
+            _trieOfReversed.InsertRange(reversedWords.Keys.ToArray(), (s, i) => WordInfo.Create(reversedWords[s], i));
         }
 
         public int F(string prefix, string suffix)
@@ -30,44 +40,49 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
             return GetWordIndex(prefix, suffix);
         }
 
-        //class CharNode
-        //{
-        //    public char Value;
-        //    public SortedList<char, CharNode> Children = new SortedList<char, CharNode>();
-        //    public int? Weight;
-        //}
-
-        //private CharNode GetTrie(string[] words)
-        //{
-
-        //    for (int i = 0; i < words.Length; ++i)
-        //    {
-
-        //    }
-        //}
-
-        //private static void AddWord(CharNode root, string word)
-        //{
-        //    foreach (var c in word)
-        //    {
-        //        CharNode cNode;
-        //        root.Children.TryGetValue(c, out cNode);
-        //        if ()
-        //    }
-        //}
 
         class WordInfo
         {
-            //public string Word;
+            public string OriginalWord;
             public int Weight;
+
+            public override bool Equals(object obj)
+            {
+                var wordInfo = obj as WordInfo;
+                if (wordInfo == null)
+                    return false;
+
+                return OriginalWord == wordInfo.OriginalWord && Weight == wordInfo.Weight;
+            }
+
+            public override int GetHashCode() => OriginalWord.GetHashCode() ^ Weight.GetHashCode();
+            public override string ToString() => $"{nameof(OriginalWord)}: {OriginalWord}, {nameof(Weight)}: {Weight}";
+
+            public static WordInfo Create(string originalWord, int index)
+            {
+                return new WordInfo
+                {
+                    OriginalWord = originalWord,
+                    Weight = index,
+                };
+            }
         }
 
-        public static int GetWordIndex(string prefix, string suffix)
+        public int GetWordIndex(string prefix, string suffix)
         {
-            //words
-            //    .Where(w => w.StartsWith(prefix) && w.EndsWith(prefix))
-            //    .
-            return 0;
+            var prefixWords = _trie.GetStartWith(prefix)
+                .Select(ni => ni.Info)
+                .OrderByDescending(wi => wi.Weight);
+
+            var suffixWords = _trieOfReversed.GetStartWith(suffix)
+                .Select(ni => ni.Info)
+                .OrderByDescending(wi => wi.Weight);
+
+            var wordInfo = prefixWords.Intersect(suffixWords).FirstOrDefault();
+            if (wordInfo == null)
+                return -1;
+
+            return wordInfo.Weight;
         }
     }
 }

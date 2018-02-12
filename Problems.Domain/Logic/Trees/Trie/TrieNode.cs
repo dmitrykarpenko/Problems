@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Trees.Trie
 {
-    public class TrieNode<TInfo>
+    public class TrieNode<TInfo> : TrieNode
+    {
+        public TInfo Info { get; set; }
+    }
+
+    public class TrieNode
     {
         public char Value { get; set; }
-        public List<TrieNode<TInfo>> Children { get; set; }
-        public TrieNode<TInfo> Parent { get; set; }
+        public List<TrieNode> Children { get; set; }
+        public TrieNode Parent { get; set; }
         public int Depth { get; set; }
 
-        public TInfo Info { get; set; }
 
-
-        public TrieNode(char value, int depth, TrieNode<TInfo> parent)
+        public TrieNode(char value, int depth, TrieNode parent)
             : this()
         {
             Value = value;
@@ -26,7 +29,7 @@ namespace Problems.Domain.Logic.Trees.Trie
 
         public TrieNode()
         {
-            Children = new List<TrieNode<TInfo>>();
+            Children = new List<TrieNode>();
         }
 
 
@@ -35,13 +38,30 @@ namespace Problems.Domain.Logic.Trees.Trie
             return Children.Count == 0;
         }
 
-        public TrieNode<TInfo> FindChildNode(char c)
+        public TrieNode FindChildNode(char c)
         {
             foreach (var child in Children)
                 if (child.Value == c)
                     return child;
 
             return null;
+        }
+
+        /// <summary>
+        /// Finds nodes containing char c among children, subchildren etc. Used e.g. to find terminal symbol nodes.
+        /// </summary>
+        /// <param name="c">char to find among children nodes</param>
+        /// <returns></returns>
+        public IEnumerable<TrieNode> FindChildNodeRecursive(char c)
+        {
+            foreach (var child in Children)
+            {
+                if (child.Value == c)
+                    yield return child;
+
+                foreach (var subChild in child.FindChildNodeRecursive(c))
+                    yield return subChild;
+            }
         }
 
         public void DeleteChildNode(char c)
