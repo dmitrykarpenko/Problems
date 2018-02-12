@@ -19,11 +19,16 @@ namespace Problems.Domain.Tests.Logic.Strings
             {
                 new
                 {
-                    Words = new[] { "cabbage", "apple" },
+                    Words = new[] { "cabbage", "apple", "carrot" },
                     Searches = new[]
                     {
                         new { Prefix = "a", Suffix = "e", Output = 1, },
                         new { Prefix = "ca", Suffix = "e", Output = 0, },
+                        new { Prefix = "cab", Suffix = "", Output = 0, },
+                        new { Prefix = "", Suffix = "", Output = 2, },
+                        new { Prefix = "", Suffix = "ge", Output = 0, },
+                        new { Prefix = "", Suffix = "e", Output = 1, },
+                        new { Prefix = "", Suffix = "carrot", Output = 2, },
                     },
                 },
                 new
