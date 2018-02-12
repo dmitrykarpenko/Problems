@@ -44,7 +44,7 @@ namespace Problems.Domain.Logic.Strings.PrefixSuffixFinder
         }
 
 
-        class WordInfo
+        private class WordInfo
         {
             public string OriginalWord;
             public int Weight;

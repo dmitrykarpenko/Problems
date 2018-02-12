@@ -64,7 +64,7 @@ namespace Problems.Domain.Logic.Trees.Trie
             }
         }
 
-        public void AddOrUpdateChildNode<TInfo>(TrieNode<TInfo> node)
+        public void AddOrUpdateChildNode<TInfo>(TrieNode<TInfo> node, Func<TrieNode<TInfo>, bool> assignInfo = null)
         {
             TrieNode existingNode;
             AddChildNode(node, out existingNode);
@@ -75,6 +75,10 @@ namespace Problems.Domain.Logic.Trees.Trie
                 if (existingNodeWithInfo != null)
                 {
                     ++existingNodeWithInfo.Count;
+                    if (assignInfo == null || assignInfo(existingNodeWithInfo))
+                    {
+                        existingNodeWithInfo.Info = node.Info;
+                    }
                 }
             }
             // else if node exists and not terminal - leave as it is for now
