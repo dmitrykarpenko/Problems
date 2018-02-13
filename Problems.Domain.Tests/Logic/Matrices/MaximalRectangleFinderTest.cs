@@ -230,5 +230,15 @@ namespace Problems.Domain.Tests.Logic.Matrices
                 Assert.AreEqual(inputObject.Output, output);
             }
         }
+
+        private char[] CreateArray(IEnumerable<(char[], int)> charArrays)
+        {
+            var list = new List<char>();
+            foreach (var charArrayWithCount in charArrays)
+                for (int i = 0; i < charArrayWithCount.Item2; ++i)
+                    list.AddRange(charArrayWithCount.Item1);
+
+            return list.ToArray();
+        }
     }
 }

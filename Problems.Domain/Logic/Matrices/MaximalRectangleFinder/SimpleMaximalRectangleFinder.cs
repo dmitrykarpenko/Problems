@@ -59,25 +59,17 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
 		{
 			public PointModel P1;
 			public PointModel P2;
-			
-			public int Area
-			{
-				get
-				{
-					return (P2.I - P1.I + 1) * (P2.J - P1.J + 1);
-				}
-			}
-			
-			public bool Contains(RectangleModel r)
-			{
-				return P1.I <= r.P1.I && P1.J <= r.P1.J &&
-					P2.I >= r.P2.I && P2.J >= r.P2.J;
-			}
-			public bool ContainsPoint(int i, int j)
-			{
-				return P1.I <= i && P1.J <= j &&
-					P2.I >= i && P2.J >= j;
-            }
+
+            public int Area => (P2.I - P1.I + 1) * (P2.J - P1.J + 1);
+
+            public bool Contains(RectangleModel r) =>
+                P1.I <= r.P1.I && P1.J <= r.P1.J &&
+                P2.I >= r.P2.I && P2.J >= r.P2.J;
+
+            public bool ContainsPoint(int i, int j) =>
+                P1.I <= i && P1.J <= j &&
+                P2.I >= i && P2.J >= j;
+
             public override string ToString() => $"[{P1}, {P2}]";
         }
 		
@@ -107,17 +99,19 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
 				}
 			}
 			
-			public bool ContainsPoint(int i, int j)
-			{
-				return _rectangles.Any(r => r.ContainsPoint(i, j));
-			}
-		}
+			public bool ContainsPoint(int i, int j) => _rectangles.Any(r => r.ContainsPoint(i, j));
+        }
 		
         private IEnumerable<PointModel> GetOppositeVertices(PointModel topLeftVertex)
         {
             var iMin = topLeftVertex.I;
             var jMin = topLeftVertex.J;
 
+            return GetOppositeVertices(iMin, jMin);
+        }
+
+        private IEnumerable<PointModel> GetOppositeVertices(int iMin, int jMin)
+        {
             var iTop = _height;
             var jTop = _width;
 
@@ -125,22 +119,22 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
             int jCandidate = jTop - 1;
             for (int i = iMin; i < iTop; ++i)
             {
-				int j = GetMaxSignificantJ(i, jMin, jTop);
+                int j = GetMaxSignificantJ(i, jMin, jTop);
 
-				if (j < jCandidate)
-				{
-					iCandidate = i - 1;
-					if (iCandidate >= iMin)
-					{
-						yield return new PointModel { I = iCandidate, J = jCandidate };
+                if (j < jCandidate)
+                {
+                    iCandidate = i - 1;
+                    if (iCandidate >= iMin)
+                    {
+                        yield return new PointModel { I = iCandidate, J = jCandidate };
                     }
                     if (j < 0)
                     {
                         yield break;
                     }
                     jTop = j + 1;
-					jCandidate = j;
-				}
+                    jCandidate = j;
+                }
             }
 
             iCandidate = iTop - 1;
@@ -149,8 +143,8 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
                 yield return new PointModel { I = iCandidate, J = jCandidate };
             }
         }
-		
-		private int GetMaxSignificantJ(int i, int jMin, int jTop)
+
+        private int GetMaxSignificantJ(int i, int jMin, int jTop)
 		{
 			if (_matrix[i, jMin] != _significant)
 				return -1;
