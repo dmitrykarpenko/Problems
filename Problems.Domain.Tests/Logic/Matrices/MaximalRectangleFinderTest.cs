@@ -23,6 +23,82 @@ namespace Problems.Domain.Tests.Logic.Matrices
                 {
                     Input = new [,]
                     {
+                        { '1', '1' },
+                        { '0', '0' },
+                    },
+                    Output = 2,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '1', '0', '0' },
+                        { '0', '0', '0' },
+                    },
+                    Output = 1,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '1', '0', '0' },
+                        { '0', '0', '1' },
+                    },
+                    Output = 1,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '0', '0', '0' },
+                        { '0', '0', '1' },
+                    },
+                    Output = 1,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '0', '0', '0' },
+                        { '0', '0', '0' },
+                    },
+                    Output = 0,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '0', '1', '1' },
+                        { '0', '1', '1' },
+                        { '0', '1', '0' },
+                    },
+                    Output = 4,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '1', '1', '1' },
+                        { '1', '1', '1' },
+                        { '0', '1', '0' },
+                    },
+                    Output = 6,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '0', '1', '0', '0' },
+                        { '0', '1', '1', '1' },
+                        { '1', '1', '1', '1' },
+                        { '0', '0', '1', '0' },
+                    },
+                    Output = 6,
+                },
+                new
+                {
+                    Input = new [,]
+                    {
                         { '1', '0', '1', '0', '0' },
                         { '1', '0', '1', '1', '1' },
                         { '1', '1', '1', '1', '1' },
@@ -30,15 +106,26 @@ namespace Problems.Domain.Tests.Logic.Matrices
                     },
                     Output = 6,
                 },
+                new
+                {
+                    Input = new [,]
+                    {
+                        { '1', '1', '1', '1', '0' },
+                        { '1', '1', '1', '1', '1' },
+                        { '1', '1', '1', '1', '1' },
+                        { '1', '0', '0', '1', '1' },
+                    },
+                    Output = 12,
+                },
             };
 
             foreach (var inputObject in inputObjects)
             {
-                //// Act:
-                //var output = maximalRectangleFinder.MaximalRectangle(inputObject.Input);
+                // Act:
+                var output = maximalRectangleFinder.MaximalRectangle(inputObject.Input);
 
-                //// Assert:
-                //Assert.AreEqual(inputObject.Output, output);
+                // Assert:
+                Assert.AreEqual(inputObject.Output, output);
             }
         }
     }
