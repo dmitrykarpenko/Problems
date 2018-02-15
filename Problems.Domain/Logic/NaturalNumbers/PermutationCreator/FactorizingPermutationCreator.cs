@@ -13,16 +13,12 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
             return CreatePermutation(n, k);
         }
 
-        private int[] _factorialProgression;
-
         public string CreatePermutation(int n, int k)
         {
             var kIndex = k - 1;
-            _factorialProgression = GetFactorialProgression(n - 1);
+            var factorialProgression = GetDescendingFactorialProgression(n - 1);
 
-            var coefficients = GetCoefficients(kIndex, _factorialProgression)
-                .ToArray();
-
+            var coefficients = GetCoefficients(kIndex, factorialProgression);
             var ascendingNumbers = Create(n).ToList();
 
             var sb = new StringBuilder();
@@ -35,27 +31,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
             }
 
             return sb.ToString();
-
-            //var addedCoefficients = new SortedSet<int>();
-            //addedCoefficients.
-            //var coefficientsList = coefficients.ToList();
-            //var iTop = coefficientsList.Count;
-
-            //for (int i = 0; i < iTop; i++)
-            //{
-            //    coefficientsList[i]
-            //    sb.Append();
-            //}
         }
-
-        //private static SortedList<int, int> CreateSorted(int n)
-        //{
-        //    var numbers = Create(n);
-        //    foreach (var number in numbers)
-        //    {
-
-        //    }
-        //}
 
         private static IEnumerable<int> Create(int n)
         {
@@ -63,9 +39,9 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
                 yield return i;
         }
 
-        private static IEnumerable<int> GetCoefficients(int number, int[] descendingValues, int skipLast = 0)
+        private static IEnumerable<int> GetCoefficients(int number, int[] descendingValues)
         {
-            for (int i = 0; i < descendingValues.Length - skipLast; ++i)
+            for (int i = 0; i < descendingValues.Length; ++i)
             {
                 var coefficient = number / descendingValues[i];
                 yield return coefficient;
@@ -73,7 +49,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
             }
         }
 
-        private static int[] GetFactorialProgression(int number)
+        private static int[] GetDescendingFactorialProgression(int number)
         {
             var current = 1;
             var list = new List<int> { current };
