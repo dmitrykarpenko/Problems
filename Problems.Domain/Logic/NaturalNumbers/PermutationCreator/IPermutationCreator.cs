@@ -27,7 +27,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
         /// </summary>
         /// <param name="n">max number in a set</param>
         /// <param name="k">wanted permutation number</param>
-        /// <returns></returns>
+        /// <returns>Wanted permutation</returns>
         string GetPermutation(int n, int k);
     }
 }

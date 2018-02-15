@@ -13,7 +13,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.PermutationCreator
             return CreatePermutation(n, k);
         }
 
-        public string CreatePermutation(int n, int k)
+        private string CreatePermutation(int n, int k)
         {
             var kIndex = k - 1;
             var factorialProgression = GetDescendingFactorialProgression(n - 1);
