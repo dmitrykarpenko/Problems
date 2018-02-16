@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Problems.Domain.Logic.Strings.PrefixSuffixFinder;
+using GU = Problems.Domain.Tests.Utils.GenericUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace Problems.Domain.Tests.Logic.Strings
                 },
                 new
                 {
-                    Words = CreateArray(new[] { ("a", 10000), ("b", 10000) }),
+                    Words = GU.CreateArray(new[] { ("a", 10000), ("b", 10000) }),
                     Searches = new[]
                     {
                         new { Prefix = "a", Suffix = "a", Output = 9999, },
@@ -73,7 +74,7 @@ namespace Problems.Domain.Tests.Logic.Strings
                 },
                 new
                 {
-                    Words = CreateArray(new[] { ("f", 10000) }),
+                    Words = GU.CreateArray(new[] { ("f", 10000) }),
                     Searches = new[]
                     {
                         new { Prefix = "a", Suffix = "a", Output = -1, },
@@ -100,18 +101,6 @@ namespace Problems.Domain.Tests.Logic.Strings
                     }
                 }
             }
-        }
-
-
-
-        private string[] CreateArray(IEnumerable<(string, int)> strings)
-        {
-            var list = new List<string>();
-            foreach (var stringWithCount in strings)
-                for (int i = 0; i < stringWithCount.Item2; ++i)
-                    list.Add(stringWithCount.Item1);
-
-            return list.ToArray();
         }
     }
 }
