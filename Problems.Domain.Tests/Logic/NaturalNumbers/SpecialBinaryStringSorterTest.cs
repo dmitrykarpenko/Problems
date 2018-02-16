@@ -19,13 +19,14 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
 
             var inputObjects = new[]
             {
-                new { Input = "11011000", Output = "11100100" },
+                //new { Input = "11011000", Output = "11100100" },
+                new { Input = "1 1100 1110011000 1", Output = "1111001100011001" },
             };
 
             foreach (var inputObject in inputObjects)
             {
-                //// Act:
-                //var output = specialBinaryStringSorter.MakeLargestSpecial(inputObject.Input);
+                // Act:
+                var output = specialBinaryStringSorter.MakeLargestSpecialAndRemoveSpaces(inputObject.Input);
 
                 //// Assert:
                 //Assert.AreEqual(inputObject.Output, output);

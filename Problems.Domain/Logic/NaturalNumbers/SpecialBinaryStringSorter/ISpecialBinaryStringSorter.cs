@@ -33,7 +33,9 @@ namespace Problems.Domain.Logic.NaturalNumbers.SpecialBinaryStringSorter
         /// S is guaranteed to be a special binary string as defined above.
         /// </summary>
         /// <param name="S"></param>
-        /// <returns></returns>
+        /// <returns>lexicographically largest string</returns>
         string MakeLargestSpecial(string S);
+
+        string MakeLargestSpecialAndRemoveSpaces(string input);
     }
 }
