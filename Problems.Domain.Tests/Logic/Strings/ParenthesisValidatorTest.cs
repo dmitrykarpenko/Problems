@@ -19,7 +19,7 @@ namespace Problems.Domain.Tests.Logic.Strings
 
             var inputObjects = new[]
             {
-                //new { Input = "(())((())()()(*)(*()(())())())()()((()())((()))(*", Output = false },
+                new { Input = "(())((())()()(*)(*()(())())())()()((()())((()))(*", Output = false },
                 new { Input = "", Output = true },
                 new { Input = "()", Output = true },
                 new { Input = "((*))", Output = true },

@@ -15,24 +15,39 @@ namespace Problems.Domain.Logic.Strings.ParenthesisValidator
 
         private static bool AreParenthesisValid(string s)
         {
-            int parenthesisCount = 0,
-                wildcardCount = 0;
+            // interval of possible "Count('(') - Count(')')"
+            int minParenthesisCount = 0,
+                maxParenthesisCount = 0;
             for (int i = 0; i < s.Length; ++i)
             {
                 if (s[i] == '(')
-                    ++parenthesisCount;
+                {
+                    // interval shifts right
+                    ++minParenthesisCount;
+                    ++maxParenthesisCount;
+                }
                 else if (s[i] == ')')
-                    --parenthesisCount;
+                {
+                    // interval shifts left
+                    --minParenthesisCount;
+                    --maxParenthesisCount;
+                }
                 else if (s[i] == '*')
-                    ++wildcardCount;
+                {
+                    // interval widens
+                    --minParenthesisCount;
+                    ++maxParenthesisCount;
+                }
 
-                // if too many right or too many left, return false
-                if (parenthesisCount + wildcardCount < 0 ||
-                    parenthesisCount - wildcardCount > s.Length - 1 - i)
+                // if too many ')', return false
+                if (maxParenthesisCount < 0)
                     return false;
+                // some wildcard should be used to close ')', interval narrows a bit
+                if (minParenthesisCount < 0)
+                    minParenthesisCount = 0;
             }
 
-            return wildcardCount - Math.Abs(parenthesisCount) > 0;
+            return minParenthesisCount == 0;
         }
     }
 }
