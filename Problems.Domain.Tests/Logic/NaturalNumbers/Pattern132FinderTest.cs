@@ -16,12 +16,14 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
         public void Find132patternTest()
         {
             // Arrange:
-            IPattern132Finder pattern132Finder = new SequentialPattern132Finder();
+
+            // TODO: fix:
+            // new SequentialPattern132Finder();
+            IPattern132Finder pattern132Finder = new LcPattern132Finder(); 
 
             var inputObjects = new[]
             {
-                // TODO: fix
-                //new { Input = new[] { 4, 6, -3, -1, 0 }, Output = false },
+                new { Input = new[] { 4, 6, -3, -1, 0 }, Output = false },
                 new { Input = new[] { 3, 5, 0, 3, 4 }, Output = true },
                 new { Input = new[] { 3, 1, 4, 2 }, Output = true },
                 new { Input = new[] { 10, 1, -2, 5, 6, -1 }, Output = true },
