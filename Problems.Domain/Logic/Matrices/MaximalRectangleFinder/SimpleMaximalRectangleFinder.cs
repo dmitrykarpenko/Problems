@@ -34,6 +34,7 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
 					if (true || !rectangleCache.ContainsPoint(i, j))
 					{
 						var point = new PointModel { I = i, J = j };
+                        // iterrating through all "opposite" vertices for each point is too complex
 						var oppositeVertices = GetOppositeVertices(point)
                             .ToArray();
 						foreach (var v in oppositeVertices)
