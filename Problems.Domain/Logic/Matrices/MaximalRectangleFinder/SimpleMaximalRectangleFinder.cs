@@ -31,6 +31,8 @@ namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
             {
                 for (int j = 0; j < _width; ++j)
                 {
+                    // even if a point is in an added rectangle,
+                    // it can be a top-left vertex of a bigger rectangle
 					if (true || !rectangleCache.ContainsPoint(i, j))
 					{
 						var point = new PointModel { I = i, J = j };
