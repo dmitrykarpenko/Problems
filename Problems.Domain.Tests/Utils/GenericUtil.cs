@@ -21,7 +21,7 @@ namespace Problems.Domain.Tests.Utils
         public static string CreateString(IEnumerable<(char, int)> chars) => new string(CreateArray(chars));
 
         public static T[] CreateArrayFromEnumerables<T>(params (IEnumerable<T>, int)[] itemCollections) =>
-            CreateEnumerable(itemCollections).ToArray();
+            CreateEnumerableFromTuples(itemCollections).ToArray();
 
         public static T[] CreateArrayFromEnumerables<T>(params IEnumerable<(T, int)>[] itemCollections) =>
             CreateEnumerable(itemCollections).ToArray();
@@ -29,7 +29,7 @@ namespace Problems.Domain.Tests.Utils
         public static T[] CreateArray<T>(params (T, int)[] items) => CreateEnumerable(items).ToArray();
         public static T[] CreateArray<T>(IEnumerable<(T, int)> items) => CreateEnumerable(items).ToArray();
 
-        public static IEnumerable<T> CreateEnumerable<T>(IEnumerable<(IEnumerable<T>, int)> itemCollections)
+        public static IEnumerable<T> CreateEnumerableFromTuples<T>(IEnumerable<(IEnumerable<T>, int)> itemCollections)
         {
             IEnumerable<T> allItems = new T[0];
             foreach (var items in itemCollections)
