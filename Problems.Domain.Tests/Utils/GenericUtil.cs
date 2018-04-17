@@ -49,6 +49,9 @@ namespace Problems.Domain.Tests.Utils
             return allItems;
         }
 
+        public static IEnumerable<T> CreateEnumerable<T>(params (T, int)[] items) =>
+            CreateEnumerable((IEnumerable<(T, int)>)items);
+
         public static IEnumerable<T> CreateEnumerable<T>(IEnumerable<IEnumerable<(T, int)>> itemCollections) =>
             CreateEnumerable(itemCollections.SelectMany(items => items));
 

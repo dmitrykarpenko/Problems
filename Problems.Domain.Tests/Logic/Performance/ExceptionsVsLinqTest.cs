@@ -39,7 +39,7 @@ namespace Problems.Domain.Tests.Logic.Performance
                 exceptionResult.TimeSpent / linqResult.TimeSpent
                 } times slower than {nameof(linqResult)}");
 
-            AssertMuchGreater(exceptionResult.TimeSpent, linqResult.TimeSpent);
+            AssertUtil.AssertMuchGreater(exceptionResult.TimeSpent, linqResult.TimeSpent);
         }
 
         private int CountEven(Func<string> getValue)
@@ -69,38 +69,13 @@ namespace Problems.Domain.Tests.Logic.Performance
             TestContext.WriteLine($@"{fourthLayerResult.TimeSpent} : time of {nameof(fourthLayerResult)}");
             TestContext.WriteLine($@"{zeroLayerResult.TimeSpent} : time of {nameof(zeroLayerResult)}");
 
-            AssertRoughlyEqual(eighthLayerResult.TimeSpent, fourthLayerResult.TimeSpent);
-            AssertRoughlyEqual(fourthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
-            AssertRoughlyEqual(eighthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
+            AssertUtil.AssertRoughlyEqual(eighthLayerResult.TimeSpent, fourthLayerResult.TimeSpent);
+            AssertUtil.AssertRoughlyEqual(fourthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
+            AssertUtil.AssertRoughlyEqual(eighthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
             TestContext.WriteLine($@"getting {nameof(eighthLayerResult)} was {
                 eighthLayerResult.TimeSpent / zeroLayerResult.TimeSpent
                 } times slower than {nameof(zeroLayerResult)}");
         }
-
-        private const int _greaterOrder = 2;
-        private void AssertMuchGreater(TimeSpan greater, TimeSpan smaller)
-        {
-            AssertGreater(greater, smaller * _greaterOrder, "Is not much greater: ");
-        }
-        private void AssertSlightlyGreater(TimeSpan greater, TimeSpan smaller)
-        {
-            AssertGreater(greater, smaller, "Is not greater: ");
-            AssertGreater(smaller * _greaterOrder, greater, "Is greater but not slightly: ");
-        }
-
-        private const int _roughlyEqualOrder = 4;
-        private void AssertRoughlyEqual(TimeSpan first, TimeSpan second)
-        {
-            // e.g. "y > x / 4" and "y < 4 * x" wedge
-            AssertGreater(first * _roughlyEqualOrder, second);
-            AssertGreater(second * _roughlyEqualOrder, first);
-        }
-
-        private void AssertGreater(TimeSpan greater, TimeSpan smaller, string errorStart = null) =>
-            Assert.IsTrue(greater > smaller, GetAssertGreaterError(greater, smaller, errorStart));
-
-        private string GetAssertGreaterError(TimeSpan greater, TimeSpan smaller, string errorStart = null) =>
-            $"{errorStart}{greater} should be greater than {smaller}";
 
         private string ThrowFrom8thLayer() =>
             ThrowFrom7thLayer();
