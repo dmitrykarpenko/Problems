@@ -8,6 +8,16 @@ namespace Problems.Domain.Tests.Utils
 {
     public static class GenericUtil
     {
+        public static ExecutionResult<List<TResult>> Execute<TResult>(Func<TResult> action, int count) =>
+            Execute(
+                () =>
+                {
+                    var results = new List<TResult>();
+                    for (int i = 0; i < count; ++i)
+                        results.Add(action());
+                    return results;
+                });
+
         public static ExecutionResult<TResult> Execute<TResult>(Func<TResult> action)
         {
             var start = DateTime.UtcNow;
