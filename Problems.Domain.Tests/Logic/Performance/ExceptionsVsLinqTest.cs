@@ -35,6 +35,9 @@ namespace Problems.Domain.Tests.Logic.Performance
 
             TestContext.WriteLine($@"{exceptionResult.TimeSpent} : time of {nameof(exceptionResult)}");
             TestContext.WriteLine($@"{linqResult.TimeSpent} : time of {nameof(linqResult)}");
+            TestContext.WriteLine($@"getting {nameof(exceptionResult)} was {
+                exceptionResult.TimeSpent / linqResult.TimeSpent
+                } times slower than {nameof(linqResult)}");
 
             AssertMuchGreater(exceptionResult.TimeSpent, linqResult.TimeSpent);
         }
@@ -69,6 +72,9 @@ namespace Problems.Domain.Tests.Logic.Performance
             AssertRoughlyEqual(eighthLayerResult.TimeSpent, fourthLayerResult.TimeSpent);
             AssertRoughlyEqual(fourthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
             AssertRoughlyEqual(eighthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
+            TestContext.WriteLine($@"getting {nameof(eighthLayerResult)} was {
+                eighthLayerResult.TimeSpent / zeroLayerResult.TimeSpent
+                } times slower than {nameof(zeroLayerResult)}");
         }
 
         private const int _greaterOrder = 2;
