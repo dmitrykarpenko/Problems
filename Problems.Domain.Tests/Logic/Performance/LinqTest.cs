@@ -14,12 +14,22 @@ namespace Problems.Domain.Tests.Logic.Performance
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        public void ToArrayVsToListTest()
-        {
-            var count = 100;
-            var items = GenericUtil.CreateEnumerable((1, 10), (2, 12), (33, 301));
+        public void ToArrayVsToList_Scale1Count100_Test() =>
+            ToArrayVsToListTest(1, 100);
 
-            // idle start to perform all the runtime optimizations in advance
+        [TestMethod]
+        public void ToArrayVsToList_Scale10Count100_Test() =>
+            ToArrayVsToListTest(10, 100);
+
+        [TestMethod]
+        public void ToArrayVsToList_Scale100Count10_Test() =>
+            ToArrayVsToListTest(100, 10);
+
+        public void ToArrayVsToListTest(int itemsScale, int count)
+        {
+            var items = GenericUtil.CreateEnumerable((1, 10 * itemsScale), (2, 12 * itemsScale), (33, 31 * itemsScale));
+
+            // idle run to perform all the runtime optimizations in advance
             GenericUtil.Execute(() => items.ToArray(), count);
             GenericUtil.Execute(() => items.ToList(), count);
 
