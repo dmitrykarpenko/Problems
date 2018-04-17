@@ -15,6 +15,8 @@ namespace Problems.Domain.Tests.Logic.Performance
         private static readonly Random _random = new Random();
         private string GetStringRandom => _random.Next(0, 2_000_000_000).ToString();
 
+        public TestContext TestContext { get; set; }
+
         [TestMethod]
         public void ExceptionsVsLinqSimpleTest()
         {
@@ -30,6 +32,9 @@ namespace Problems.Domain.Tests.Logic.Performance
                     var error = errors.FirstOrDefault();
                     return error;
                 }));
+
+            TestContext.WriteLine($@"{exceptionResult.TimeSpent} : time of {nameof(exceptionResult)}");
+            TestContext.WriteLine($@"{linqResult.TimeSpent} : time of {nameof(linqResult)}");
 
             AssertMuchGreater(exceptionResult.TimeSpent, linqResult.TimeSpent);
         }
@@ -56,6 +61,10 @@ namespace Problems.Domain.Tests.Logic.Performance
             var eighthLayerResult = GenericUtil.Execute(ThrowFrom8thLayer, count);
             var fourthLayerResult = GenericUtil.Execute(ThrowFrom4thLayer, count);
             var zeroLayerResult = GenericUtil.Execute(ThrowAndGetMessage, count);
+
+            TestContext.WriteLine($@"{eighthLayerResult.TimeSpent} : time of {nameof(eighthLayerResult)}");
+            TestContext.WriteLine($@"{fourthLayerResult.TimeSpent} : time of {nameof(fourthLayerResult)}");
+            TestContext.WriteLine($@"{zeroLayerResult.TimeSpent} : time of {nameof(zeroLayerResult)}");
 
             AssertRoughlyEqual(eighthLayerResult.TimeSpent, fourthLayerResult.TimeSpent);
             AssertRoughlyEqual(fourthLayerResult.TimeSpent, zeroLayerResult.TimeSpent);
