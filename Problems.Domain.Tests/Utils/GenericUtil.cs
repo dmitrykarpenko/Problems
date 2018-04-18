@@ -8,6 +8,26 @@ namespace Problems.Domain.Tests.Utils
 {
     public static class GenericUtil
     {
+        //public static ExecutionResult<List<TResult>> ExecuteWithIdle<TResult>(Func<TResult> action, int count)
+        //{
+        //    // idle run to perform all the runtime optimizations in advance
+        //    Execute(action, count);
+        //    return Execute(action, count);
+        //}
+
+        //public static ExecutionResult<List<TResult>>[] ExecuteWithIdle<TResult>(int count, params Func<TResult>[] actions)
+        //{
+        //    // idle run to perform all the runtime optimizations in advance
+        //    Execute(count, actions).ToArray();
+        //    return Execute(count, actions).ToArray();
+        //}
+
+        //public static IEnumerable<ExecutionResult<List<TResult>>> Execute<TResult>(int count, params Func<TResult>[] actions)
+        //{
+        //    for (int i = 0; i < actions.Length; ++i)
+        //        yield return Execute(actions[i], count);
+        //}
+
         public static ExecutionResult<List<TResult>> Execute<TResult>(Func<TResult> action, int count) =>
             Execute(
                 () =>

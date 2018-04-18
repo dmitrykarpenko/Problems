@@ -20,18 +20,24 @@ namespace Problems.Domain.Tests.Logic.Performance
         [TestMethod]
         public void ExceptionsVsLinqSimpleTest()
         {
-            var exceptionResult = GenericUtil.Execute(() =>
-                CountEven(() => ThrowAndGetMessage(GetStringRandom)));
+            var count = 100;
 
-            var linqResult = GenericUtil.Execute(() =>
-                CountEven(() =>
+            // getting linqResult first to do the runtime optimization
+            // before getting exceptionResult
+            var linqResult = GenericUtil.Execute(
+                () =>
                 {
                     // use concurrent collection in order not to use the fastest collection
                     var errors = new ConcurrentStack<string>();
                     errors.Push(GetStringRandom);
                     var error = errors.FirstOrDefault();
                     return error;
-                }));
+                },
+                count);
+
+            var exceptionResult = GenericUtil.Execute(
+                () => ThrowAndGetMessage(GetStringRandom),
+                count);
 
             TestContext.WriteLine($@"{exceptionResult.TimeSpent} : time of {nameof(exceptionResult)}");
             TestContext.WriteLine($@"{linqResult.TimeSpent} : time of {nameof(linqResult)}");
