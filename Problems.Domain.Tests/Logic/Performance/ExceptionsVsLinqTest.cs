@@ -36,7 +36,7 @@ namespace Problems.Domain.Tests.Logic.Performance
                 count);
 
             var exceptionResult = GenericUtil.Execute(
-                () => ThrowAndGetMessage(GetStringRandom),
+                () => ThrowAndGetMessageBase(GetStringRandom),
                 count);
 
             TestContext.WriteLine($@"{exceptionResult.TimeSpent} : time of {nameof(exceptionResult)}");
@@ -48,19 +48,19 @@ namespace Problems.Domain.Tests.Logic.Performance
             AssertUtil.AssertGreater(exceptionResult.TimeSpent, linqResult.TimeSpent);
         }
 
-        private int CountEven(Func<string> getValue)
-        {
-            var count = 100;
-            var evenCount = 0;
-            for (int i = 0; i < count; ++i)
-            {
-                var value = getValue();
-                var valueInt = int.Parse(value);
-                if (valueInt % 2 == 0)
-                    ++evenCount;
-            }
-            return evenCount;
-        }
+        //private int CountEven(Func<string> getValue)
+        //{
+        //    var count = 100;
+        //    var evenCount = 0;
+        //    for (int i = 0; i < count; ++i)
+        //    {
+        //        var value = getValue();
+        //        var valueInt = int.Parse(value);
+        //        if (valueInt % 2 == 0)
+        //            ++evenCount;
+        //    }
+        //    return evenCount;
+        //}
 
         [TestMethod]
         public void ExceptionsOnDifferentLayersTest()
@@ -83,34 +83,64 @@ namespace Problems.Domain.Tests.Logic.Performance
                 } times slower than {nameof(zeroLayerResult)}");
         }
 
-        private string ThrowFrom8thLayer() =>
-            ThrowFrom7thLayer();
+        private string ThrowFrom8thLayer() => ThrowFrom8thLayer(null);
+        private string ThrowFrom8thLayer(string message)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 8" };
+            return ThrowFrom7thLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom7thLayer() =>
-            ThrowFrom6thLayer();
+        private string ThrowFrom7thLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 7" };
+            return ThrowFrom6thLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom6thLayer() =>
-            ThrowFrom5thLayer();
+        private string ThrowFrom6thLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 6" };
+            return ThrowFrom5thLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom5thLayer() =>
-            ThrowFrom4thLayer();
+        private string ThrowFrom5thLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 5" };
+            return ThrowFrom4thLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom4thLayer() =>
-            ThrowFrom3rdLayer();
+        private string ThrowFrom4thLayer() => ThrowFrom4thLayer(null);
+        private string ThrowFrom4thLayer(string message)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 4" };
+            return ThrowFrom3rdLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom3rdLayer() =>
-            ThrowFrom2ndLayer();
+        private string ThrowFrom3rdLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 3" };
+            return ThrowFrom2ndLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom2ndLayer() =>
-            ThrowFrom1stLayer();
+        private string ThrowFrom2ndLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 2" };
+            return ThrowFrom1stLayer(messageWrapper.Message);
+        }
 
-        private string ThrowFrom1stLayer() =>
-            ThrowAndGetMessage();
+        private string ThrowFrom1stLayer(string message = null)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 1" };
+            return ThrowAndGetMessage(messageWrapper.Message);
+        }
 
-        private string ThrowAndGetMessage() =>
-            ThrowAndGetMessage("dummy message");
-
+        private string ThrowAndGetMessage() => ThrowAndGetMessage(null);
         private string ThrowAndGetMessage(string message)
+        {
+            var messageWrapper = new { Message = message ?? "dummy message form layer 0" };
+            return ThrowAndGetMessageBase(messageWrapper.Message);
+        }
+
+        private string ThrowAndGetMessageBase(string message)
         {
             // use the simplest exception and the shortest try-catch
             try
