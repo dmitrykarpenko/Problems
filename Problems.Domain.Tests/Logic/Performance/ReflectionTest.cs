@@ -45,5 +45,35 @@ namespace Problems.Domain.Tests.Logic.Performance
             AssertUtil.AssertRoughlyEqual(getTypeResult.TimeSpent, dereferencingResult.TimeSpent, order);
             AssertUtil.AssertRoughlyEqual(typeofResult.TimeSpent, dereferencingResult.TimeSpent, order);
         }
+
+        [TestMethod]
+        public void DefaultVsNullCompareTest()
+        {
+            var items = GenericUtil.CreateArray((new ExecutionResult<object>(), 1000));
+            var count = 1500;
+
+            // idle run to perform all the runtime optimizations in advance
+            var defaultCompareResult = GenericUtil.Execute(
+                () => items = items.Where(i => i != default(ExecutionResult<object>)).ToArray(),
+                count);
+            var nullCompareResult = GenericUtil.Execute(
+                () => items = items.Where(i => i != null).ToArray(),
+                count);
+
+            defaultCompareResult = GenericUtil.Execute(
+                () => items = items.Where(i => i != default(ExecutionResult<object>)).ToArray(),
+                count);
+            nullCompareResult = GenericUtil.Execute(
+                () => items = items.Where(i => i != null).ToArray(),
+                count);
+
+            // usually the ratio is slightly greater than one 
+            TestContext.WriteLine($@"getting {nameof(defaultCompareResult)} was {
+                defaultCompareResult.TimeSpent / nullCompareResult.TimeSpent
+                } times slower than {nameof(nullCompareResult)}");
+
+            var order = 5;
+            AssertUtil.AssertRoughlyEqual(defaultCompareResult.TimeSpent, nullCompareResult.TimeSpent, order);
+        }
     }
 }
