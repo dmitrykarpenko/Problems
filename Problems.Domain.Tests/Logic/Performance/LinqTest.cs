@@ -39,7 +39,7 @@ namespace Problems.Domain.Tests.Logic.Performance
             TestContext.WriteLine($@"{toArrayResult.TimeSpent} : time of {nameof(toArrayResult)}");
             TestContext.WriteLine($@"{toListResult.TimeSpent} : time of {nameof(toListResult)}");
 
-            AssertUtil.AssertRoughlyEqual(toArrayResult.TimeSpent, toListResult.TimeSpent, 1.5f);
+            AssertUtil.AssertRoughlyEqual(toArrayResult.TimeSpent, toListResult.TimeSpent, 5);
         }
     }
 }
