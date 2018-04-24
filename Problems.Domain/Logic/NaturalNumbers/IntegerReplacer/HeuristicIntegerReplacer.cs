@@ -21,11 +21,9 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             if (ceilingLogN == logN)
                 return (int)ceilingLogN;
 
-            var ceilingPower = Math.Pow(2, ceilingLogN);
+            var splittingCeiling = Math.Log(2*n/3);
 
-            var splittingCeilingPower = Math.Log(2*n/3);
-
-            if (ceilingPower <= splittingCeilingPower)
+            if (logN <= splittingCeiling)
             {
 
             }
