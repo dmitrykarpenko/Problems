@@ -34,5 +34,59 @@ namespace Problems.Domain.Tests.Utils
 
         public static string GetAssertGreaterError(TimeSpan greater, TimeSpan smaller, string errorStart = null) =>
             $"{errorStart}{greater} should be greater than {smaller}";
+        
+        /// <summary>
+        /// Would also compare the elements themselves.
+        /// </summary>
+        /// <typeparam name="TCollectionElement">collections' element type</typeparam>
+        /// <param name="properCollection">a collection of proper elements ("arranged")</param>
+        /// <param name="collection">a collection of elements to "assert" (algorithm output)</param>
+        public static void AssertCollection<TCollectionElement>(IEnumerable<TCollectionElement> properCollection,
+                IEnumerable<TCollectionElement> collection) =>
+            AssertCollection(properCollection, collection, e => e);
+
+        public static void AssertCollection<TCollectionElement, TProp>(IEnumerable<TCollectionElement> properCollection,
+                IEnumerable<TCollectionElement> collection,
+                params Func<TCollectionElement, TProp>[] elementPropsSelectors) =>
+            AssertCollection(properCollection, collection, (IList<Func<TCollectionElement, TProp>>)elementPropsSelectors);
+
+        // should be made public if required
+        private static void AssertCollection<TCollectionElement, TProp>(IEnumerable<TCollectionElement> properCollection,
+            IEnumerable<TCollectionElement> collection,
+            IList<Func<TCollectionElement, TProp>> elementPropsSelectors)
+        {
+            AssertDifferentReferences(properCollection, collection);
+            Assert.IsNotNull(properCollection);
+            Assert.IsNotNull(collection);
+            Assert.AreEqual(properCollection.Count(), collection.Count());
+
+            var compares = properCollection.Zip(collection,
+                (pe, e) => new { ProperElement = pe, Element = e });
+
+            foreach (var compare in compares)
+                AssertPropsEquality(compare.ProperElement, compare.Element, elementPropsSelectors);
+        }
+
+        public static void AssertDifferentReferences<TDto>(TDto properDto, TDto dto)
+        {
+            /// dto creation process knows nothing about the <paramref name="properDto"/> object
+            /// (that should be created on "Arrange"),
+            /// so a new <paramref name="dto"/> object should be created
+            Assert.IsFalse(object.ReferenceEquals(properDto, dto));
+        }
+
+        public static void AssertPropsEquality<TDto, TProp>(TDto properDto, TDto dto,
+                params Func<TDto, TProp>[] dtoPropsSelectors) =>
+            AssertPropsEquality(properDto, dto, dtoPropsSelectors);
+
+        // should be made public if required
+        private static void AssertPropsEquality<TDto, TProp>(TDto properDto, TDto dto,
+            IList<Func<TDto, TProp>> dtoPropsSelectors)
+        {
+            Assert.IsTrue(dtoPropsSelectors.Any());
+
+            foreach (var s in dtoPropsSelectors)
+                Assert.AreEqual(s(properDto), s(dto));
+        }
     }
 }

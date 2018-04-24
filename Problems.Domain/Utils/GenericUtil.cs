@@ -8,6 +8,25 @@ namespace Problems.Domain.Utils
 {
     public static class GenericUtil
     {
+        public static void Swap<T>(this IList<T> items, int i, int j)
+        {
+            T temp = items[i];
+            items[i] = items[j];
+            items[j] = temp;
+        }
+
+        public static bool IsDescending<T>(this IEnumerable<T> items)
+            where T : IComparable<T> => IsMonotonic(items, true);
+
+        public static bool IsMonotonic<T>(this IEnumerable<T> items, bool desc)
+                where T : IComparable<T> =>
+            items
+                .Zip(items.Skip(1),
+                    (curr, next) => desc
+                        ? curr.CompareTo(next) >= 0
+                        : curr.CompareTo(next) <= 0)
+                .All(x => x);
+
         public static IEnumerable<T> RemoveAt<T>(T[] input, int index)
         {
             return RemoveIf(input, (t, i) => i == index);
