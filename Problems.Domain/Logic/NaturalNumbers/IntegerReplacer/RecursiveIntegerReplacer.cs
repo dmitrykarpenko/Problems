@@ -13,8 +13,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             AddPowerOf2Counts(n);
             return CountIntegerReplacementsRecursive(n, 0);
         }
-
-        //private int count = 0;
+        
         private Dictionary<int, int> _nCounts = new Dictionary<int, int>();
 
         private int CountIntegerReplacementsRecursive(int n, int previousCount)
@@ -24,15 +23,18 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             if (!_nCounts.TryGetValue(n, out nMinCount))
             {
                 nMinCount = int.MaxValue;
+                
+                int closestPowerOf2Less = CountWithShiftsClosestPowerOf2LessThan(n);
+                int closestPowerOf2Greater = closestPowerOf2Less;
+                if (n > closestPowerOf2Less)
+                    closestPowerOf2Greater *= 2;
 
-                int closestPowerOf2Less = CountClosestPowerOf2LessThan(n);
-                int closestPowerOf2Greater = closestPowerOf2Less * 2;
                 for (int k = closestPowerOf2Less; k <= closestPowerOf2Greater; ++k)
                 {
                     if (k % 2 == 0)
                     {
-                        int nToK = Math.Abs(n - k); // steps from n to k
-                        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, nToK + 1); // division by 2 is also a step
+                        int nextPreviousCount = Math.Abs(n - k) + 1; // steps from n to k + division by 2 which is also a step
+                        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, nextPreviousCount);
                         if (kBy2Count < nMinCount)
                             nMinCount = kBy2Count;
                     }
@@ -58,8 +60,16 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             _nCounts.Add(p, count);
         }
 
+        /// at debug works with rougly the same speed as <see cref="CountWithMathClosestPowerOf2LessThan"/>
+        private static int CountWithShiftsClosestPowerOf2LessThan(int n)
+        {
+            for (int p = 0; ; ++p)
+                if (n >> p == 1)
+                    return 1 << p;
+        }
+
         // TODO: optimize with shifts or search
-        private int CountClosestPowerOf2LessThan(int n)
+        private static int CountWithMathClosestPowerOf2LessThan(int n)
         {
             var logN = Math.Log(n, 2);
             var ceilingLogN = Math.Floor(logN);

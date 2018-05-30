@@ -20,6 +20,12 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
 
             var inputObjects = new[]
             {
+                //new { Input = 1245412, Output = 25 },
+                new { Input = 127, Output = 8 },
+                new { Input = 129, Output = 8 },
+                new { Input = 130, Output = 8 },
+                new { Input = 260, Output = 9 },
+                new { Input = 119, Output = 9 },
                 new { Input = 8, Output = 3 },
                 new { Input = 7, Output = 4 },
                 new { Input = 3, Output = 2 },
