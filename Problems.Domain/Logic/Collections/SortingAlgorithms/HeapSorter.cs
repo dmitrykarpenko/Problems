@@ -12,7 +12,6 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         public void Sort<T>(IList<T> items, bool desc = false)
             where T : IComparable<T>
         {
-            // Build max heap
             int heapSize = items.Count;
             for (int p = (heapSize - 1) / 2; p >= 0; --p)
                 Heapify(items, heapSize, p, desc);
