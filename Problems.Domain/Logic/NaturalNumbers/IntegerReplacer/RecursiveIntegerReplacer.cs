@@ -13,28 +13,42 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             AddPowerOf2Counts(n);
             return CountIntegerReplacementsRecursive(n, 0);
         }
-        
-        private Dictionary<int, int> _nCounts = new Dictionary<int, int>();
 
-        private int CountIntegerReplacementsRecursive(int n, int previousCount)
+        /// <summary> key: k, value: stored <see cref="IntegerReplacement"/> of k </summary>
+        private Dictionary<long, int> _nCounts = new Dictionary<long, int>();
+
+        private int CountIntegerReplacementsRecursive(long n, int previousCount)
         {
             // min count of steps to turn n into 1 regardless of previousCount
             int nMinCount;
             if (!_nCounts.TryGetValue(n, out nMinCount))
             {
                 nMinCount = int.MaxValue;
-                
-                int closestPowerOf2Less = CountWithShiftsClosestPowerOf2LessThan(n);
-                int closestPowerOf2Greater = closestPowerOf2Less;
-                if (n > closestPowerOf2Less)
-                    closestPowerOf2Greater *= 2;
 
-                for (int k = closestPowerOf2Less; k <= closestPowerOf2Greater; ++k)
+                // The idea is to do the division by 2 first,
+                // as then we'll have to make 2 times less steps, e.g.:
+                // 130 -> 129 -> 128 -> 64 ->  ... is one step longer than
+                // 130 ->  65 ->  64 -> ...
+                // Thus, we keep the [kMin, kMax] interval as narrow as possible,
+                // which will be [n, n] is n is even and [n - 1, n + 1] if n is odd :
+                long kMin, kMax;
+                if (n % 2 == 0)
+                {
+                    kMin = n;
+                    kMax = n;
+                }
+                else
+                {
+                    kMin = n - 1;
+                    kMax = n + 1;
+                }
+
+                for (long k = kMin; k <= kMax; ++k)
                 {
                     if (k % 2 == 0)
                     {
-                        int nextPreviousCount = Math.Abs(n - k) + 1; // steps from n to k + division by 2 which is also a step
-                        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, nextPreviousCount);
+                        var nextPreviousCount = Math.Abs((int)(n - k)) + 1; // steps from n to k + division by 2 which is also a step
+                        var kBy2Count = CountIntegerReplacementsRecursive(k / 2, nextPreviousCount);
                         if (kBy2Count < nMinCount)
                             nMinCount = kBy2Count;
                     }
@@ -46,11 +60,11 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
             return nMinCount + previousCount;
         }
         
-        private void AddPowerOf2Counts(int n)
+        private void AddPowerOf2Counts(long n)
         {
             _nCounts.Clear();
-            var p = 1;
-            var count = 0;
+            long p = 1;
+            int count = 0;
             while (p < n)
             {
                 _nCounts.Add(p, count);
@@ -58,22 +72,6 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
                 ++count;
             }
             _nCounts.Add(p, count);
-        }
-
-        /// at debug works with rougly the same speed as <see cref="CountWithMathClosestPowerOf2LessThan"/>
-        private static int CountWithShiftsClosestPowerOf2LessThan(int n)
-        {
-            for (int p = 0; ; ++p)
-                if (n >> p == 1)
-                    return 1 << p;
-        }
-
-        // TODO: optimize with shifts or search
-        private static int CountWithMathClosestPowerOf2LessThan(int n)
-        {
-            var logN = Math.Log(n, 2);
-            var ceilingLogN = Math.Floor(logN);
-            return (int)Math.Pow(2, ceilingLogN);
         }
     }
 }
