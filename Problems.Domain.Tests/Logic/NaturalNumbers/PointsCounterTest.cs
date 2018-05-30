@@ -22,6 +22,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
             {
                 new { Input = 8, Output = 3 },
                 new { Input = 7, Output = 4 },
+                new { Input = 3, Output = 2 },
             };
 
             foreach (var inputObject in inputObjects)

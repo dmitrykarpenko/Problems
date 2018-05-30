@@ -10,59 +10,59 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
     {
         public int IntegerReplacement(int n)
         {
+            AddPowerOf2Counts(n);
             return CountIntegerReplacementsRecursive(n, 0);
-            //return count;
         }
 
         //private int count = 0;
-        private Dictionary<int, int> counts = new Dictionary<int, int>();
+        private Dictionary<int, int> _nCounts = new Dictionary<int, int>();
 
         private int CountIntegerReplacementsRecursive(int n, int previousCount)
         {
-            if (n == 1)
-                return previousCount;
-
-            int minCount;
-            if (!counts.TryGetValue(n, out minCount))
+            // min count of steps to turn n into 1 regardless of previousCount
+            int nMinCount;
+            if (!_nCounts.TryGetValue(n, out nMinCount))
             {
-                minCount = int.MaxValue;
-                int currentCount = 0;
+                nMinCount = int.MaxValue;
 
                 int closestPowerOf2Less = CountClosestPowerOf2LessThan(n);
-                for (int k = n; k >= closestPowerOf2Less; --k, ++currentCount)
+                int closestPowerOf2Greater = closestPowerOf2Less * 2;
+                for (int k = closestPowerOf2Less; k <= closestPowerOf2Greater; ++k)
                 {
                     if (k % 2 == 0)
                     {
-                        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, ++currentCount);
-                        if (kBy2Count < minCount)
-                            minCount = kBy2Count;
+                        int nToK = Math.Abs(n - k); // steps from n to k
+                        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, nToK + 1); // division by 2 is also a step
+                        if (kBy2Count < nMinCount)
+                            nMinCount = kBy2Count;
                     }
                 }
 
-                //// TODO: consider up-and-then-down movenment
-                //currentCount = 0;
-                //int closestPowerOf2Greater = closestPowerOf2Less * 2;
-                //for (int k = n; k <= closestPowerOf2Greater; ++k, ++currentCount)
-                //{
-                //    if (k % 2 == 0)
-                //    {
-                //        int kBy2Count = CountIntegerReplacementsRecursive(k / 2, ++currentCount);
-                //        if (kBy2Count < minCount)
-                //            minCount = kBy2Count;
-                //    }
-                //}
-
-                if (minCount < int.MaxValue)
-                    counts[n] = minCount;
+                if (nMinCount < int.MaxValue)
+                    _nCounts[n] = nMinCount;
             }
-            return minCount + previousCount;
+            return nMinCount + previousCount;
+        }
+        
+        private void AddPowerOf2Counts(int n)
+        {
+            _nCounts.Clear();
+            var p = 1;
+            var count = 0;
+            while (p < n)
+            {
+                _nCounts.Add(p, count);
+                p *= 2;
+                ++count;
+            }
+            _nCounts.Add(p, count);
         }
 
-        // TODO: optimize with shifts
+        // TODO: optimize with shifts or search
         private int CountClosestPowerOf2LessThan(int n)
         {
-            var logN = Math.Log(n);
-            var ceilingLogN = Math.Ceiling(logN);
+            var logN = Math.Log(n, 2);
+            var ceilingLogN = Math.Floor(logN);
             return (int)Math.Pow(2, ceilingLogN);
         }
     }
