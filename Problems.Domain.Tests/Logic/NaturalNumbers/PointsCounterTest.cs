@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Tests.Logic.NaturalNumbers
 {
-    //HeuristicIntegerReplacer : IIntegerReplacer
     [TestClass]
     public class IntegerReplacerTest
     {
@@ -17,7 +16,7 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
         public void IntegerReplacementTest()
         {
             // Arrange:
-            IIntegerReplacer integerReplacer = new HeuristicIntegerReplacer();
+            IIntegerReplacer integerReplacer = new RecursiveIntegerReplacer();
 
             var inputObjects = new[]
             {
@@ -27,11 +26,11 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
 
             foreach (var inputObject in inputObjects)
             {
-                //// Act:
-                //var output = integerReplacer.IntegerReplacement(inputObject.Input);
+                // Act:
+                var output = integerReplacer.IntegerReplacement(inputObject.Input);
 
-                //// Assert:
-                //Assert.AreEqual(inputObject.Output, output);
+                // Assert:
+                Assert.AreEqual(inputObject.Output, output);
             }
         }
     }

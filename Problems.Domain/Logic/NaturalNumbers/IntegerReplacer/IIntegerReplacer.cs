@@ -9,6 +9,9 @@ namespace Problems.Domain.Logic.NaturalNumbers.IntegerReplacer
     public interface IIntegerReplacer
     {
         /// <summary>
+        /// https://leetcode.com/problems/integer-replacement/description/
+        /// 397. Integer Replacement
+        /// 
         /// Given a positive integer n and you can do operations as follow:
         /// If n is even, replace n with n/2.
         /// If n is odd, you can replace n with either n + 1 or n - 1.
