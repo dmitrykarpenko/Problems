@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Problems.Domain.Logic.Matrices.MaximalRectangleFinder;
+using Problems.Domain.Logic.Matrices.MaximalSquareFinder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +9,13 @@ using System.Threading.Tasks;
 namespace Problems.Domain.Tests.Logic.Matrices
 {
     [TestClass]
-    public class MaximalRectangleFinderTest
+    public class MaximalSquareFinderTest
     {
         [TestMethod]
-        public void SimpleMaximalRectangleFinder_MaximalRectangle_Test() =>
-            MaximalRectangleTest(new SimpleMaximalRectangleFinder());
-
-        //[TestMethod]
-        //public void RecursiveMaximalRectangleFinder_MaximalRectangle_Test() =>
-        //    MaximalRectangleTest(new RecursiveMaximalRectangleFinder());
-
-        public void MaximalRectangleTest(IMaximalRectangleFinder maximalRectangleFinder)
+        public void MaximalSquareFinder_MaximalSquare_Test()
         {
+            IMaximalSquareFinder maximalSquareFinder = new MaximalSquareFinder();
+
             // Arrange:
             var inputObjects = new[]
             {
@@ -34,7 +29,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1' },
                         { '0', '0' },
                     },
-                    Output = 2,
+                    Output = 1,
                 },
                 new
                 {
@@ -90,7 +85,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1' },
                         { '0', '1', '0' },
                     },
-                    Output = 6,
+                    Output = 4,
                 },
                 new
                 {
@@ -110,7 +105,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1' },
                         { '1', '1', '0' },
                     },
-                    Output = 6,
+                    Output = 4,
                 },
                 new
                 {
@@ -121,7 +116,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1' },
                         { '0', '0', '1', '0' },
                     },
-                    Output = 6,
+                    Output = 4,
                 },
                 new
                 {
@@ -132,7 +127,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1', '1' },
                         { '1', '0', '0', '1', '0' },
                     },
-                    Output = 6,
+                    Output = 4,
                 },
                 new
                 {
@@ -143,7 +138,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1', '1' },
                         { '1', '0', '0', '1', '1' },
                     },
-                    Output = 12,
+                    Output = 9,
                 },
                 new
                 {
@@ -154,7 +149,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1', '0' },
                         { '1', '0', '0', '0', '1' },
                     },
-                    Output = 12,
+                    Output = 9,
                 },
                 new
                 {
@@ -165,7 +160,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '0', '0', '0', '0', '1' },
                         { '0', '0', '0', '1', '1' },
                     },
-                    Output = 5,
+                    Output = 4,
                 },
                 new
                 {
@@ -176,7 +171,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '0', '1', '1', '1', '1' },
                         { '0', '0', '0', '1', '1' },
                     },
-                    Output = 12,
+                    Output = 9,
                 },
                 new
                 {
@@ -187,7 +182,7 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1', '1' },
                         { '1', '0', '0', '0', '1' },
                     },
-                    Output = 15,
+                    Output = 9,
                 },
                 new
                 {
@@ -210,14 +205,14 @@ namespace Problems.Domain.Tests.Logic.Matrices
                         { '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', },
                         { '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', },
                     },
-                    Output = 3424,
+                    Output = 16*16,
                 },
             };
 
             foreach (var inputObject in inputObjects)
             {
                 // Act:
-                var output = maximalRectangleFinder.MaximalRectangle(inputObject.Input);
+                var output = maximalSquareFinder.MaximalSquare(inputObject.Input);
 
                 // Assert:
                 Assert.AreEqual(inputObject.Output, output);
