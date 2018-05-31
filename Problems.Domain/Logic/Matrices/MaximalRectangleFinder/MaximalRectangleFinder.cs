@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Matrices.MaximalRectangleFinder
 {
-    public class RecursiveMaximalRectangleFinder : IMaximalRectangleFinder
+    public class MaximalRectangleFinder : IMaximalRectangleFinder
     {
         public int MaximalRectangle(char[,] matrix)
         {

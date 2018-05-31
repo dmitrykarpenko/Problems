@@ -16,8 +16,8 @@ namespace Problems.Domain.Tests.Logic.Matrices
             MaximalRectangleTest(new SimpleMaximalRectangleFinder());
 
         //[TestMethod]
-        //public void RecursiveMaximalRectangleFinder_MaximalRectangle_Test() =>
-        //    MaximalRectangleTest(new RecursiveMaximalRectangleFinder());
+        //public void MaximalRectangleFinder_MaximalRectangle_Test() =>
+        //    MaximalRectangleTest(new MaximalRectangleFinder());
 
         public void MaximalRectangleTest(IMaximalRectangleFinder maximalRectangleFinder)
         {
