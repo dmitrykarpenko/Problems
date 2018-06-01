@@ -35,7 +35,7 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
         /// Pattern to search it and it's permutations
         /// (i.e. patterns) in <paramref name="txt"/>
         /// </param>
-        /// <returns></returns>
-        int[] Search(string txt, string pat);
+        /// <returns>An array of first indices of found permutations' occurrences</returns>
+        int[] GetIndices(string txt, string pat);
     }
 }
