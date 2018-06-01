@@ -18,6 +18,8 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
         /// Strings consists of lowercase English letters only
         /// and the length of both strings s and p will not be larger than 20,100.
         /// 
+        /// (English letters, thus their number is restricted!)
+        /// 
         /// The order of output does not matter.
         /// 
         /// ---
