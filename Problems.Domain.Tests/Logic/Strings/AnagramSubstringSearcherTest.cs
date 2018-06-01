@@ -25,6 +25,8 @@ namespace Problems.Domain.Tests.Logic.Strings
                 new { Input = new { Txt = "BACDGABCDA", Pat = "ABCD" }, Output = new [] { 0, 5, 6 } },
                 new { Input = new { Txt = "BACDGABCDA", Pat = "CDAB" }, Output = new [] { 0, 5, 6 } },
                 new { Input = new { Txt = "AAABABAA", Pat = "AABA" }, Output = new [] { 0, 1, 4 } },
+                //new { Input = new { Txt = "cbaebabacd", Pat = "abc" }, Output = new [] { 0, 6 } },
+                //new { Input = new { Txt = "abab", Pat = "ab" }, Output = new [] { 0, 1, 2 } },
                 new { Input = new { Txt = largeString, Pat = "ABCD" }, Output = new [] { 398 } },
                 new { Input = new { Txt = largeString, Pat = "ABDC" }, Output = new [] { 398 } },
                 new { Input = new { Txt = largeString, Pat = "DCAB" }, Output = new [] { 398 } },

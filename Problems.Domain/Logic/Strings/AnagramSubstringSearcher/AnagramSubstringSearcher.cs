@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
 {
-    public class AnagramSubstringSearcher : IAnagramSubstringSearcher
+    public class AnagramSubstringSearcher : IAnagramSubstringSearcher, ILcAnagramSubstringSearcher
     {
+        /// <summary> <see cref="GetIndices"/> </summary>
+        public IList<int> FindAnagrams(string s, string p)
+        {
+            FillFoundIndices(s, p);
+            return _foundIndices;
+        }
+
         /// <summary>
         /// Searches for all the <paramref name="pat"/>
         /// permutations' occurrences in <paramref name="txt"/>
@@ -17,16 +24,22 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
         /// <returns>An array of <see cref="_foundIndices"/></returns>
         public int[] GetIndices(string txt, string pat)
         {
+            FillFoundIndices(txt, pat);
+            return _foundIndices.ToArray();
+        }
+
+        public void FillFoundIndices(string txt, string pat)
+        {
+            Initialize();
+
             if (txt == null || pat == null)
-                return new int[0];
+                return;
 
             int txtL = txt.Length;
             int patL = pat.Length;
 
             if (txtL == 0 || patL == 0 || txtL < patL)
-                return new int[0];
-
-            Initialize();
+                return;
 
             // Count char counts forthe first text window and the pattern
             for (int i = 0; i < patL; i++)
@@ -60,8 +73,6 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
 
             // Check for the last text window
             AddFoundIndexIfCountsEqual(iTwFirst);
-
-            return _foundIndices.ToArray();
         }
 
         /// <summary>
