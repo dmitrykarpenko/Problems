@@ -8,6 +8,14 @@ namespace Problems.Domain.Logic.Matrices.MaximalSquareFinder
 {
     public class MaximalSquareFinder : IMaximalSquareFinder
     {
+        /// <summary>
+        /// Time Complexity: O(rc*cc).
+        /// Auxiliary Space: O(rc*cc).
+        /// Here rc is number of rows and n is number of columns in the given <paramref name="matrix"/>.
+        /// Algorithmic Paradigm: Dynamic Programming.
+        /// </summary>
+        /// <param name="matrix">Input matrix, rc x cc (i.e. "row count" x "column count")</param>
+        /// <returns>Area of the largest square</returns>
         public int MaximalSquare(char[,] matrix)
         {
             if (matrix == null)
