@@ -12,7 +12,8 @@ namespace Problems.Domain.Logic.NaturalNumbers.ThreeSumFinder
         /// The algorithm is based on sorting:
         /// we sort nums first (which takes at most O(n^2) time) and
         /// then inspect an interval [left, right],
-        /// adding triples [nums[i], nums[left], nums[right]] if conditions met
+        /// adding triples [nums[i], nums[left], nums[right]] if conditions met.
+        /// The whole algorithm spends O(n^2) time.
         /// </summary>
         /// <param name="nums">The input numbers</param>
         /// <returns>The output collection of triples</returns>
@@ -26,6 +27,7 @@ namespace Problems.Domain.Logic.NaturalNumbers.ThreeSumFinder
             // takes at most O(n^2)
             Sort(nums);
 
+            // two nested loops also spend O(n^2) time
             for (int i = 0; i < nums.Length - 2; ++i)
             {
                 // as we are searching for distinct triples, 
