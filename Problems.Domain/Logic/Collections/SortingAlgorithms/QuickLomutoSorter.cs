@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Collections.SortingAlgorithms
 {
-    public class QuickSorter : ISorter
+    public class QuickLomutoSorter : ISorter
     {
         public void Sort<T>(IList<T> items, bool desc = false)
             where T : IComparable<T>

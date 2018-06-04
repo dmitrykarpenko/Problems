@@ -20,7 +20,7 @@ namespace Problems.Domain.Tests.Logic.Collections
 
         [TestMethod]
         public void Sorter_Quick_Lomuto_Test() =>
-            SorterTest(new QuickSorter());
+            SorterTest(new QuickLomutoSorter());
 
         [TestMethod]
         public void Sorter_Quick_Hoare_Test() =>
