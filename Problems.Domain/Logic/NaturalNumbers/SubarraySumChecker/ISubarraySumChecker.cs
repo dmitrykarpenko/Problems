@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace Problems.Domain.Logic.NaturalNumbers.SubarraySumChecker
 {
     /// <summary>
+    /// https://leetcode.com/problems/continuous-subarray-sum/description/
+    /// 523. Continuous Subarray Sum
     /// Given a list of non-negative numbers and a target integer k,
     /// write a function to check if the array has a continuous subarray
     /// of size at least 2 that sums up to the multiple of k,
