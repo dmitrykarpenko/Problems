@@ -55,24 +55,27 @@ namespace Problems.Domain.Tests.Utils
             IEnumerable<TCollectionElement> collection,
             IList<Func<TCollectionElement, TProp>> elementPropsSelectors)
         {
-            AssertDifferentReferences(properCollection, collection);
-            Assert.IsNotNull(properCollection);
-            Assert.IsNotNull(collection);
-            Assert.AreEqual(properCollection.Count(), collection.Count());
+            AssertDifferentReferences(properCollection, collection, nameof(collection) +
+                " should be created, thus should not have the same reference as " + nameof(properCollection));
+            Assert.IsNotNull(properCollection, nameof(properCollection) + " should not be null");
+            Assert.IsNotNull(collection, nameof(collection) + " should not be null");
+            Assert.AreEqual(properCollection.Count(), collection.Count(),
+                nameof(properCollection) + " and " + nameof(collection) + " should have equal elements' counts");
 
             var compares = properCollection.Zip(collection,
                 (pe, e) => new { ProperElement = pe, Element = e });
 
             foreach (var compare in compares)
-                AssertPropsEquality(compare.ProperElement, compare.Element, elementPropsSelectors);
+                AssertPropsEquality(compare.ProperElement, compare.Element, elementPropsSelectors,
+                    "Collections' elements' parts should be equal");
         }
 
-        public static void AssertDifferentReferences<TDto>(TDto properDto, TDto dto)
+        public static void AssertDifferentReferences<TDto>(TDto properDto, TDto dto, string message = null)
         {
             /// dto creation process knows nothing about the <paramref name="properDto"/> object
             /// (that should be created on "Arrange"),
             /// so a new <paramref name="dto"/> object should be created
-            Assert.IsFalse(object.ReferenceEquals(properDto, dto));
+            Assert.IsFalse(object.ReferenceEquals(properDto, dto), message);
         }
 
         public static void AssertPropsEquality<TDto, TProp>(TDto properDto, TDto dto,
@@ -81,12 +84,13 @@ namespace Problems.Domain.Tests.Utils
 
         // should be made public if required
         private static void AssertPropsEquality<TDto, TProp>(TDto properDto, TDto dto,
-            IList<Func<TDto, TProp>> dtoPropsSelectors)
+            IList<Func<TDto, TProp>> dtoPropsSelectors,
+            string message = null)
         {
             Assert.IsTrue(dtoPropsSelectors.Any());
 
             foreach (var s in dtoPropsSelectors)
-                Assert.AreEqual(s(properDto), s(dto));
+                Assert.AreEqual(s(properDto), s(dto), message);
         }
     }
 }
