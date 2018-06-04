@@ -35,7 +35,7 @@ namespace Problems.Domain.Tests.Logic.Performance
             TestContext.WriteLine($@"{getTypeResult.TimeSpent} : time of {nameof(getTypeResult)}");
             TestContext.WriteLine($@"{dereferencingResult.TimeSpent} : time of {nameof(dereferencingResult)}");
 
-            var order = 5;
+            //var order = 5;
             //// used this asserts on debug:
             //AssertUtil.AssertGreater(getTypeResult.TimeSpent, typeofResult.TimeSpent,
             //    $"{nameof(getTypeResult)} used to be slower than {nameof(typeofResult)}: ");
