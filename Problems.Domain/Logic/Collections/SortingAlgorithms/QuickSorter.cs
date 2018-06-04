@@ -12,7 +12,7 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         public void Sort<T>(IList<T> items, bool desc = false)
             where T : IComparable<T>
         {
-            QuickSort(items, 0, items.Count - 1, desc);
+            QuickSortLomuto(items, 0, items.Count - 1, desc);
         }
 
         /// <summary>
@@ -22,21 +22,21 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         /// <param name="low">Starting index</param>
         /// <param name="high">Ending index</param>
         /// <param name="desc">false - ascending, true - descending</param>
-        private void QuickSort<T>(IList<T> items, int low, int high,
+        private static void QuickSortLomuto<T>(IList<T> items, int low, int high,
             bool desc) where T : IComparable<T>
         {
             if (low < high)
             {
                 // if pi is partitioning index,
                 // items[pi] is now at the right place
-                int pi = Partition(items, low, high,
+                int pi = PartitionLomuto(items, low, high,
                     desc);
 
                 // Recursively sort elements before
                 // partition and after partition
-                QuickSort(items, low, pi - 1,
+                QuickSortLomuto(items, low, pi - 1,
                     desc);
-                QuickSort(items, pi + 1, high,
+                QuickSortLomuto(items, pi + 1, high,
                     desc);
             }
         }
@@ -46,8 +46,8 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         /// places the pivot element at its correct
         /// position in the sorted array, and places all
         /// smaller (smaller than the pivot) elements to the left of the
-        /// pivot and all greater elements to right
-        /// of pivot.
+        /// pivot and all greater elements to the right
+        /// of the pivot.
         /// 
         /// The Lomuto partition algorithm is used. 
         /// 
@@ -64,7 +64,7 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         /// 
         /// The terms small and smaller are used considerind the ascending sort order.
         /// </summary>
-        private int Partition<T>(IList<T> items, int low, int high,
+        private static int PartitionLomuto<T>(IList<T> items, int low, int high,
             bool desc) where T : IComparable<T>
         {
             T pivot = items[high];

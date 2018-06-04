@@ -19,8 +19,12 @@ namespace Problems.Domain.Tests.Logic.Collections
             SorterTest(new HeapSorter());
 
         [TestMethod]
-        public void Sorter_Quick_Test() =>
+        public void Sorter_Quick_Lomuto_Test() =>
             SorterTest(new QuickSorter());
+
+        [TestMethod]
+        public void Sorter_Quick_Hoare_Test() =>
+            SorterTest(new QuickHoareSorter());
 
         public void SorterTest(ISorter sorter)
         {
