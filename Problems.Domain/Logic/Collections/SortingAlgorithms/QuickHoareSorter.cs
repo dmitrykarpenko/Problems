@@ -32,6 +32,8 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
                 int pi = PartitionHoare(items, low, high,
                     desc);
 
+                // Here the index of the pivot is either pi or pi + 1
+
                 // Recursively sort elements before
                 // partition and after partition
                 QuickSortHoare(items, low, pi,
@@ -71,10 +73,21 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         /// 
         /// The terms small, smaller, larger, etc. are used considerind the ascending sort order.
         /// </summary>
+        /// <typeparam name="T">Type of an item</typeparam>
+        /// <param name="items">Items array</param>
+        /// <param name="low">First index of a sorted subarray</param>
+        /// <param name="high">Lasst (included) index of a sorted subarray</param>
+        /// <param name="desc">Sorting order</param>
+        /// <returns>
+        /// The index of the rightmost element that's less than or equal to the pivot.
+        /// Thus, it's either
+        /// the index of the pivot-value element or
+        /// the index of the closest lower than the pivot element.
+        /// </returns>
         private static int PartitionHoare<T>(IList<T> items, int low, int high,
             bool desc) where T : IComparable<T>
         {
-            // 
+            // shouldn't necessarily be the first element
             T pivot = items[low];
 
             // index of the leftmost (thus il) element to be greater than or equal to pivot
@@ -85,12 +98,16 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
             while (true)
             {
                 // find the leftmost element greater than or equal to pivot
+                // by skipping all the smaller ones by incleasing il
+                // while  items[il] < pivot (for ascending)
                 do il++;
                 while (desc
                     ? items[il].CompareTo(pivot) > 0
                     : items[il].CompareTo(pivot) < 0);
 
                 // find the rightmost element smaller than or equal to pivot
+                // by skipping all the greater ones by incleasing ir
+                // while items[ir] > pivot (for ascending)
                 do ir--;
                 while (desc
                     ? items[ir].CompareTo(pivot) < 0

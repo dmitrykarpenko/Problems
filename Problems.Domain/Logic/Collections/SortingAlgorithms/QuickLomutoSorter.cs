@@ -64,6 +64,15 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
         /// 
         /// The terms small and smaller are used considerind the ascending sort order.
         /// </summary>
+        /// <typeparam name="T">Type of an item</typeparam>
+        /// <param name="items">Items array</param>
+        /// <param name="low">First index of a sorted subarray</param>
+        /// <param name="high">Lasst (included) index of a sorted subarray</param>
+        /// <param name="desc">Sorting order</param>
+        /// <returns>
+        /// The index on which the pivot element stands after sorting.
+        /// That's also the pivot value's final placement in the array.
+        /// </returns>
         private static int PartitionLomuto<T>(IList<T> items, int low, int high,
             bool desc) where T : IComparable<T>
         {
