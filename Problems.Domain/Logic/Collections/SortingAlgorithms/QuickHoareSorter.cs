@@ -32,7 +32,9 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
                 int pi = PartitionHoare(items, low, high,
                     desc);
 
-                // Here the index of the pivot is either pi or pi + 1
+                // Here the index of the pivot is either pi or pi + 1,
+                // thus could be moved later on;
+                // so, include both of those to further sorting
 
                 // Recursively sort elements before
                 // partition and after partition

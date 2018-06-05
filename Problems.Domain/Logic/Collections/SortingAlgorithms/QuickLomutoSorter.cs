@@ -32,6 +32,9 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
                 int pi = PartitionLomuto(items, low, high,
                     desc);
 
+                // the current pivot element is in place (pi),
+                // thus, do not include it to furter sorting
+
                 // Recursively sort elements before
                 // partition and after partition
                 QuickSortLomuto(items, low, pi - 1,
