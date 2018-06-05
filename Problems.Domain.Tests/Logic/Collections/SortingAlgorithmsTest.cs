@@ -13,7 +13,7 @@ namespace Problems.Domain.Tests.Logic.Collections
 {
     [TestClass]
     public class SortingAlgorithmsTest
-    {
+    {    
         [TestMethod]
         public void Sorter_Heap_Test() =>
             SorterTest(new HeapSorter());
@@ -29,6 +29,10 @@ namespace Problems.Domain.Tests.Logic.Collections
         [TestMethod]
         public void Sorter_Merge_Recursive_Test() =>
             SorterTest(new MergeRecursiveSorter());
+
+        [TestMethod]
+        public void Sorter_Merge_BottomUp_Test() =>
+            SorterTest(new MergeBottomUpSorter());
 
         public void SorterTest(ISorter sorter)
         {
