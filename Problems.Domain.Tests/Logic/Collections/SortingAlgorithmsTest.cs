@@ -13,7 +13,11 @@ namespace Problems.Domain.Tests.Logic.Collections
 {
     [TestClass]
     public class SortingAlgorithmsTest
-    {    
+    {
+        [TestMethod]
+        public void Sorter_Insertion_Test() =>
+            SorterTest(new InsertionSorter());
+
         [TestMethod]
         public void Sorter_Heap_Test() =>
             SorterTest(new HeapSorter());

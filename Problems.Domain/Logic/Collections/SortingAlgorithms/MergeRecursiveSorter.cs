@@ -59,28 +59,18 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
             // rights array length
             int rightsLength = r - m;
 
-            // Create temp arrays
-            T[] lefts = new T[leftsLength];
-            T[] rights = new T[rightsLength];
-
-            // index left (il)
-            int il;
-            // index right (ir)
-            int ir;
-
             // COPY data to the temp arrays:
 
-            for (il = 0; il < leftsLength; ++il)
-                lefts[il] = items[l + il];
-
-            for (ir = 0; ir < rightsLength; ++ir)
-                rights[ir] = items[m + 1 + ir];
+            T[] lefts = CreateAuxs(items, l, leftsLength);
+            T[] rights = CreateAuxs(items, m + 1, rightsLength);
 
             // MERGE the temp arrays:
 
-            // reinitialize indices of the subarrays
-            il = 0;
-            ir = 0;
+            // initialize indices of the subarrays:
+            // index left (il)
+            int il = 0;
+            // index right (ir)
+            int ir = 0;
 
             // initial index of the merged subarry array,
             // i.e. items index (i)
@@ -107,18 +97,32 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
             // COPY the remaining elements ...
 
             // ... of lefts[] if any
-            while (il < leftsLength)
-            {
-                items[i] = lefts[il];
-                il++;
-                i++;
-            }
+            CopyFromAuxs(lefts, il, items, i);
 
             // ... of rights[] if any
-            while (ir < rightsLength)
+            CopyFromAuxs(rights, ir, items, i);
+        }
+
+        private static T[] CreateAuxs<T>(IList<T> items, int firstIndex, int length)
+        {
+            T[] auxs = new T[length];
+
+            for (int ia = 0; ia < length; ++ia)
+                auxs[ia] = items[firstIndex + ia];
+
+            return auxs;
+        }
+
+        private static void CopyFromAuxs<T>(
+            // from auxs, start at ai:
+            IList<T> auxs, int ai,
+            // to items, start at i:
+            IList<T> items, int i)
+        {
+            while (ai < auxs.Count)
             {
-                items[i] = rights[ir];
-                ir++;
+                items[i] = auxs[ai];
+                ai++;
                 i++;
             }
         }
