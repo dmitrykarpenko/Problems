@@ -41,14 +41,14 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
             if (txtL == 0 || patL == 0 || txtL < patL)
                 return;
 
-            // Count char counts forthe first text window and the pattern
+            // Count char counts for the first text window and the pattern
             for (int i = 0; i < patL; i++)
             {
                 ++_twCounts[txt[i] % _numOfChars];
                 ++_pCounts[pat[i] % _numOfChars];
             }
 
-            /// The first index of a current txt window
+            /// The first index of a current txt window (here's why Tw)
             int iTwFirst;
             // The index next to the last index of a current txt window ("over the end")
             int iTwEnd;
@@ -60,7 +60,7 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
 
                 // Compare counts of current window
                 // of text with counts of pattern[]
-                AddFoundIndexIfCountsEqual(iTwFirst);
+                AddFoundIndexIfPatternAndTextWindowCountsEqual(iTwFirst);
 
                 // Add the next window's last character to the next window
                 ++_twCounts[txt[iTwEnd] % _numOfChars];
@@ -69,10 +69,11 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
                 --_twCounts[txt[iTwFirst] % _numOfChars];
             }
 
+            // last text window's first index
             iTwFirst = txtL - patL;
 
             // Check for the last text window
-            AddFoundIndexIfCountsEqual(iTwFirst);
+            AddFoundIndexIfPatternAndTextWindowCountsEqual(iTwFirst);
         }
 
         /// <summary>
@@ -96,8 +97,11 @@ namespace Problems.Domain.Logic.Strings.AnagramSubstringSearcher
             _twCounts = new char[_numOfChars];
         }
 
-        private void AddFoundIndexIfCountsEqual(int iTwFirst)
+        private void AddFoundIndexIfPatternAndTextWindowCountsEqual(int iTwFirst)
         {
+            // As we are searching for anagrams, we don't really care of the chars order;
+            // if the quantities of each char in the pattern (_pCounts) and the text window (_twCounts)
+            // are equal, then the text window substring can be build form the letters of the pattern
             if (Compare(_pCounts, _twCounts))
                 _foundIndices.Add(iTwFirst);
         }
