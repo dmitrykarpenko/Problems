@@ -26,6 +26,10 @@ namespace Problems.Domain.Tests.Logic.Collections
         public void Sorter_Quick_Hoare_Test() =>
             SorterTest(new QuickHoareSorter());
 
+        [TestMethod]
+        public void Sorter_Merge_Recursive_Test() =>
+            SorterTest(new MergeRecursiveSorter());
+
         public void SorterTest(ISorter sorter)
         {
             var largeInputPart = TuGu.CreateArrayFromEnumerables(new[] { (1, 2), (2, 1), (3, 1) });
