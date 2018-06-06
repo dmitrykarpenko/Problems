@@ -19,6 +19,10 @@ namespace Problems.Domain.Tests.Logic.Collections
             SorterTest(new InsertionSorter());
 
         [TestMethod]
+        public void Sorter_Pancake_Test() =>
+            SorterTest(new PancakeSorter());
+
+        [TestMethod]
         public void Sorter_Heap_Test() =>
             SorterTest(new HeapSorter());
 
