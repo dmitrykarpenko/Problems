@@ -100,7 +100,7 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
             while (true)
             {
                 // find the leftmost element greater than or equal to pivot
-                // by skipping all the smaller ones by incleasing il
+                // by skipping all the smaller ones by increasing il
                 // while  items[il] < pivot (for ascending)
                 do il++;
                 while (desc
@@ -108,7 +108,7 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
                     : items[il].CompareTo(pivot) < 0);
 
                 // find the rightmost element smaller than or equal to pivot
-                // by skipping all the greater ones by incleasing ir
+                // by skipping all the greater ones by increasing ir
                 // while items[ir] > pivot (for ascending)
                 do ir--;
                 while (desc

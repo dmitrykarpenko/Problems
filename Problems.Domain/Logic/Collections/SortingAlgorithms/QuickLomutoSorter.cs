@@ -33,7 +33,7 @@ namespace Problems.Domain.Logic.Collections.SortingAlgorithms
                     desc);
 
                 // the current pivot element is in place (pi),
-                // thus, do not include it to furter sorting
+                // thus, do not include it to further sorting
 
                 // Recursively sort elements before
                 // partition and after partition
