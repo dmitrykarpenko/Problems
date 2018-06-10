@@ -29,8 +29,10 @@ namespace Problems.Domain.Tests.Logic.Trees
                         new { Input = 9, Output = 11 },
                         new { Input = 11, Output = 12 },
                         new { Input = 20, Output = 25 },
+                        new { Input = 14, Output = 20 },
 
                         new { Input = 25, Output = _emptyOutput },
+                        new { Input = 317, Output = _emptyOutput },
                     }
                 },
             };

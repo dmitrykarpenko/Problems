@@ -28,12 +28,21 @@ namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
 
         public Node FindInOrderSuccessor(Node inputNode)
         {
+            if (inputNode == null)
+            {
+                return null;
+            }
+
             int init = inputNode.key;
             Node res = null;
 
-            if (inputNode.parent != null && inputNode.parent.key > init)
+            if (inputNode.parent != null)
             {
-                res = inputNode.parent;
+                if (inputNode.parent.key > init)
+                {
+                    res = inputNode.parent;
+                }
+
                 TraverseUp(inputNode, init, ref res);
             }
 
@@ -59,7 +68,7 @@ namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
             // TODO: consider returning if it's impossible to find a solution
             // higher (e.g. when the parent is more right than the current node)
 
-            if (init < next.key && next.key < res.key)
+            if (init < next.key && (res == null || next.key < res.key))
             {
                 res = next;
             }
