@@ -53,8 +53,11 @@ namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
         private static void TraverseUp(Node currentNode, int init, ref Node res)
         {
             var next = currentNode.parent;
-            if (next == null || currentNode.parent.key < init)
+            if (next == null)
                 return;
+
+            // TODO: consider returning if it's impossible to find a solution
+            // higher (e.g. when the parent is more right than the current node)
 
             if (init < next.key && next.key < res.key)
             {
