@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Problems.Domain.Logic.Trees.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
 {
-    public class Node
+    public class Node : IBinaryTreeNode<int>
     {
         public int key;
         public Node left;
@@ -20,9 +21,13 @@ namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
             right = null;
             parent = null;
         }
+
+        public int Value { get => key; set => key = value; }
+        public IBinaryTreeNode<int> Left { get => left; set => left = (Node)value; }
+        public IBinaryTreeNode<int> Right { get => right; set => right = (Node)value; }
     }
     
-    public class BstSuccessorSearcher : IBstSuccessorSearcher
+    public class BstSuccessorSearcher : IBstSuccessorSearcher, IBinaryTree<int>
     {
         private Node _root;
 
@@ -105,6 +110,15 @@ namespace Problems.Domain.Logic.Trees.BstSuccessorSearcher
             foreach (var key in keys)
                 Insert(key);
         }
+
+        #endregion
+
+        #region IBinaryTree implementation
+
+        public IBinaryTreeNode<int> GetNode(int value) =>
+            GetNodeByKey(value);
+
+        public IBinaryTreeNode<int> Root => _root;
 
         #endregion
 
