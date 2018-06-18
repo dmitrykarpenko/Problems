@@ -13,11 +13,11 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
     public class BinaryOperatorsAdderTest
     {
         [TestMethod]
-        public void BinaryOperatorsAdder_AddOperators_Test()
+        public void GfgBinaryOperatorsAdder_AddOperators_Test()
         {
             // Arrange:
 
-            //IBinaryOperatorsAdder binaryOperatorsAdder = new BinaryOperatorsAdder();
+            IBinaryOperatorsAdder binaryOperatorsAdder = new GfgBinaryOperatorsAdder();
 
             var inputObjects = new[]
             {
@@ -25,18 +25,18 @@ namespace Problems.Domain.Tests.Logic.NaturalNumbers
                 new { Num = "232", Target = 8, Output = new[] { "2*3+2", "2+3*2" } },
                 new { Num = "105", Target = 5, Output = new[] { "1*0+5", "10-5" } },
                 new { Num = "00", Target = 0, Output = new[] { "0+0", "0-0", "0*0" } },
-                new { Num = "3456237490", Target = 9191, Output = new[] { "0+0", "0-0", "0*0" } },
+                new { Num = "3456237490", Target = 9191, Output = new string[0] },
             };
 
             foreach (var inputObject in inputObjects)
             {
-                //// Act:
-                //var output = binaryOperatorsAdder.AddOperators(inputObject.Num, inputObject.Target);
+                // Act:
+                var output = binaryOperatorsAdder.AddOperators(inputObject.Num, inputObject.Target);
 
-                //// Assert:
-                //AssertUtil.AssertCollection(
-                //    inputObject.Output.OrderBy(o => o),
-                //    output.OrderBy(o => o));
+                // Assert:
+                AssertUtil.AssertCollection(
+                    inputObject.Output.OrderBy(o => o),
+                    output.OrderBy(o => o));
             }
         }
     }
