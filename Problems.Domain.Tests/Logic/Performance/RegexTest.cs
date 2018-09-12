@@ -20,7 +20,38 @@ namespace Problems.Domain.Tests.Logic.Performance
             var logRecords = GetAndParseLogRecords().ToArray();
 
             // Assert:
-            Assert.AreEqual(5, logRecords.Length);
+            AssertLogRecords(logRecords);
+        }
+
+
+        // TODO: fix duplicated log records issue
+        //[TestMethod]
+        //public async Task GetAndParseLogRecords_Concurrent_Test()
+        //{
+        //    var positions = new[]
+        //    {
+        //        new PositionModel { Start = 0, End = 159 },
+        //        new PositionModel { Start = 161, End = 513 },
+        //    };
+
+        //    // Act:
+        //    var tasks = positions
+        //        .Select(p => Task.Run(() => GetAndParseLogRecords(p)));
+
+        //    var logRecords = (await Task.WhenAll(tasks))
+        //        .SelectMany(lrs => lrs)
+        //        .ToArray();
+
+        //    // Assert:
+        //    AssertLogRecords(logRecords);
+        //}
+
+        private static void AssertLogRecords(IList<LogRecordModel> logRecords)
+        {
+            logRecords = logRecords.OrderBy(lr => lr.Created).ToArray();
+
+            // Assert:
+            Assert.AreEqual(5, logRecords.Count);
             Assert.AreEqual(LogLevel.INFO, logRecords[0].Level);
             Assert.AreEqual("test message 2", logRecords[1].JoinMessageRows());
             Assert.AreEqual("07:34", logRecords[2].Created.ToShortTimeString());
@@ -49,6 +80,8 @@ namespace Problems.Domain.Tests.Logic.Performance
             [Footer]\r\n
             ";
 
+        private static readonly int _newLineLength = Environment.NewLine.Length;
+
         private static StreamReader CreateTestStreamReader()
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(_logText);
@@ -57,21 +90,26 @@ namespace Problems.Domain.Tests.Logic.Performance
             return new StreamReader(stream, Encoding.UTF8, true, bufferSize);
         }
 
-        private static IEnumerable<LogRecordModel> GetAndParseLogRecords()
+        private static IEnumerable<LogRecordModel> GetAndParseLogRecords(
+            PositionModel position = null)
         {
             // TODO: consider Header-Footer in the first line of a log file
             using (var sr = CreateTestStreamReader())
             {
-                var record = CreateFirstLogRecord(sr);
+                var record = CreateFirstLogRecord(sr, position);
                 if (record == null)
                 {
                     yield break;
                 }
 
-                string line;
-                while (!sr.EndOfStream)
+                var currentPosition = position.Start;
+                while (!sr.EndOfStream && currentPosition < position.End)
                 {
-                    line = sr.ReadLine();
+                    var line = sr.ReadLine();
+                    currentPosition += line.Length;
+                    if (!sr.EndOfStream)
+                        currentPosition += _newLineLength;
+
                     var match = _regex.Match(line);
 
                     if (match.Success)
@@ -93,10 +131,22 @@ namespace Problems.Domain.Tests.Logic.Performance
             }
         }
 
-        private static LogRecordModel CreateFirstLogRecord(
-            StreamReader sr)
+        private class PositionModel
         {
-            while (!sr.EndOfStream)
+            public long Start { get; set; }
+            public long End { get; set; }
+        }
+
+        private static LogRecordModel CreateFirstLogRecord(
+            StreamReader sr,
+            PositionModel position)
+        {
+            if (position != null)
+            {
+                sr.BaseStream.Seek(position.Start, SeekOrigin.Begin);
+            }
+            
+            while (!sr.EndOfStream/* || sr.BaseStream.Position >= position.End */)
             {
                 var line = sr.ReadLine();
                 var match = _regex.Match(line);
