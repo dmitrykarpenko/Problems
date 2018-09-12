@@ -23,7 +23,9 @@ namespace Problems.Domain.Tests.Logic.Performance
             Assert.AreEqual(5, logRecords.Length);
             Assert.AreEqual(LogLevel.INFO, logRecords[0].Level);
             Assert.AreEqual("test message 2", logRecords[1].JoinMessageRows());
+            Assert.AreEqual("07:34", logRecords[2].Created.ToShortTimeString());
             Assert.AreEqual(4, logRecords[3].MessageRows.Count);
+            Assert.AreEqual(26, logRecords[4].Thread);
         }
 
         // a first log record line can start from "Header-Footer", so "^" is commented
@@ -36,16 +38,16 @@ namespace Problems.Domain.Tests.Logic.Performance
             @"(?<Message>.*)$");
 
         private const string _logText = @"
-[Header]\r\n[Footer]\r\n[Header]\r\n[Footer]\r\n[Header]\r\n2018-07-26 07:33:57,072 [11] INFO  LogFileAppender test message 1
-2018-07-26 07:33:57,135 [11] DEBUG LogFileAppender test message 2
-2018-07-26 07:34:33,178 [40] ERROR LogFileAppender test message 3
-2018-07-26 08:21:04,162 [6] DEBUG LogFileAppender  test message 4.1
-test message 4.2
-test message 4.3
-test message 4.4
-2018-07-26 11:52:02,131 [26] INFO  LogFileAppender test message 5
-[Footer]\r\n
-";
+            [Header]\r\n[Footer]\r\n[Header]\r\n[Footer]\r\n[Header]\r\n2018-07-26 07:33:57,072 [11] INFO  LogFileAppender test message 1
+            2018-07-26 07:33:57,135 [11] DEBUG LogFileAppender test message 2
+            2018-07-26 07:34:33,178 [40] ERROR LogFileAppender test message 3
+            2018-07-26 08:21:04,162 [6] DEBUG LogFileAppender  test message 4.1
+            test message 4.2
+                test message 4.3
+            test message 4.4
+            2018-07-26 11:52:02,131 [26] INFO  LogFileAppender test message 5
+            [Footer]\r\n
+            ";
 
         private static StreamReader CreateTestStreamReader()
         {
@@ -106,29 +108,6 @@ test message 4.4
             }
 
             return null;
-        }
-
-        private static void ForEachLine(
-            StreamReader sr, Func<string, Match, bool> onMatch, Action<string> onNoMatch)
-        {
-            while (!sr.EndOfStream)
-            {
-                var line = sr.ReadLine();
-                var match = _regex.Match(line);
-
-                if (match.Success)
-                {
-                    var stop = onMatch(line, match);
-                    if (stop)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    onNoMatch(line);
-                }
-            }
         }
 
         private static LogRecordModel CreateLogRecord(Match match)
