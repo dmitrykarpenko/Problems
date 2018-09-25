@@ -42,5 +42,45 @@ namespace Problems.Domain.Tests.Logic.Performance
             //// flaky
             //AssertUtil.AssertRoughlyEqual(toArrayResult.TimeSpent, toListResult.TimeSpent, 5);
         }
+
+        private const int _count = 105;
+
+        [TestMethod]
+        public void GetIntsWithTake_Test()
+        {
+            // Arrange:
+            var ints = GetInts();
+
+            var batchSize = 10;
+
+            IReadOnlyCollection<int> currentInts;
+            int count = 0, sum = 0;
+
+            // Act:
+            while ((currentInts = ints.Take(batchSize).ToArray()).Count > 0)
+            {
+                count += currentInts.Count;
+                foreach (var i in currentInts)
+                {
+                    sum += i;
+                }
+
+                ints = ints.Skip(batchSize);
+            }
+
+            // Assert:
+            Assert.AreEqual(_count, count);
+
+            var properSum = GetInts().Sum();
+            Assert.AreEqual(properSum, sum);
+        }
+
+        private static IEnumerable<int> GetInts()
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                yield return i;
+            }
+        }
     }
 }
