@@ -21,6 +21,13 @@ namespace Problems.Domain.Logic.Matrices.LargestHistogramRectangularFinder
 
             Initialize(heights);
 
+            FillLargestRectangleArea();
+
+            return _maxArea;
+        }
+
+        private void FillLargestRectangleArea()
+        {
             // Run through all bars of the given histogram
             while (_i < _heights.Length)
             {
@@ -43,8 +50,6 @@ namespace Problems.Domain.Logic.Matrices.LargestHistogramRectangularFinder
             {
                 PopIndexAndCalculateArea();
             }
-
-            return _maxArea;
         }
 
         /// <summary> The given histogram </summary>
@@ -60,10 +65,6 @@ namespace Problems.Domain.Logic.Matrices.LargestHistogramRectangularFinder
         private int _i;
         /// <summary> The wanted max area </summary>
         private int _maxArea;
-        /// <summary> Top of the stack </summary>
-        private int _indicesTop;
-        /// <summary> Area with the top bar as the smallest bar </summary>
-        private int _areaWithTop;
 
         private void Initialize(int[] heights)
         {
@@ -77,22 +78,24 @@ namespace Problems.Domain.Logic.Matrices.LargestHistogramRectangularFinder
         {
             // _i is the 'right index' for the top and the element before the top in the stack is the 'left index'
 
+            // Top of the stack.
             // Store the top index and POP the top:
-            _indicesTop = _indices.Pop();
+            int indicesTop = _indices.Pop();
 
             // CALCULATE the area with heights[indicesTop] stack as the smallest bar:
 
-            var areaHeight = _heights[_indicesTop];
+            var areaHeight = _heights[indicesTop];
             var areaWidth = !_indices.Any()
                 ? _i // no _indices, so the area "goes" right to the start of the histogram
-                : _i - _indices.Peek() - 1; // have an index, so the area "stops" before the index 
+                : _i - _indices.Peek() - 1; // _indices have an index, so the area "stops" before the index 
                                             // (i.e. "stops" at the popped _indicesTop index)
-
-            _areaWithTop = areaHeight * areaWidth;
+                                            
+            // Area with the top bar as the smallest bar
+            int areaWithTop = areaHeight * areaWidth;
 
             // Update max area, if needed:
-            if (_maxArea < _areaWithTop)
-                _maxArea = _areaWithTop;
+            if (_maxArea < areaWithTop)
+                _maxArea = areaWithTop;
         }
     }
 }
