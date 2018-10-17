@@ -42,6 +42,7 @@ namespace Problems.Domain.Tests.Logic.Generic
             // Arrange, act, assert:
 
             Assert.AreEqual(true, Equals(1, 1));
+            Assert.AreEqual(true, Equals((object)1, (object)1));
             Assert.AreEqual(true, Equals(100_000_000_000, 100_000_000_000));
             Assert.AreEqual(true, Equals(100_000_000_000, (double)100_000_000_000));
             Assert.AreEqual(true, Equals((long?)null, (double?)null));
@@ -49,8 +50,11 @@ namespace Problems.Domain.Tests.Logic.Generic
             Assert.AreEqual(true, Equals(null, null));
             Assert.AreEqual(true, Equals(new Tuple<string, short>("seventeen", 42), new Tuple<string, short>("seventeen", 42)));
             Assert.AreEqual(true, Equals(new Tuple<int, int>(17, 42), new Tuple<int, int>(17, 42)));
+            Assert.AreEqual(true, Equals((object)new Tuple<int, int>(17, 42), (object)new Tuple<int, int>(17, 42)));
             Assert.AreEqual(true, Equals((17, 42), (17, 42)));
+            Assert.AreEqual(true, Equals((object)(17, 42), (object)(17, 42)));
             Assert.AreEqual(true, Equals(new { Number = 52 }, new { Number = 52 }));
+            Assert.AreEqual(true, Equals((object)new { Number = 52 }, (object)new { Number = 52 }));
 
             Assert.AreEqual(false, Equals(1, 2));
             Assert.AreEqual(false, Equals("one", "one1"));
