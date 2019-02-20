@@ -11,6 +11,8 @@ namespace Problems.Domain.Tests.Logic.Generic
     [TestClass]
     public class GenericTest
     {
+        public TestContext TestContext { get; set; }
+
         [TestMethod]
         public void GfgBinarySearcher_GetIndex_Test()
         {
@@ -75,5 +77,68 @@ namespace Problems.Domain.Tests.Logic.Generic
 
         private static bool Equals<T>(T first, T second) =>
             EqualityComparer<T>.Default.Equals(first, second);
+
+        [TestMethod]
+        public void GetHashCode_Collision_Test()
+        {
+            var random = new Random();
+            var hashCodes = new HashSet<int>();
+            var collisionsCount = 0;
+
+            var counts = new[] { 1e4, 1e5,/* 1e6, 1e7*/ };
+
+            foreach (var count in counts)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    var next = random.Next().ToString();
+                    var hashCode = next.GetHashCode();
+
+                    if (!hashCodes.Contains(hashCode))
+                    {
+                        hashCodes.Add(hashCode);
+                    }
+                    else
+                    {
+                        ++collisionsCount;
+                    }
+                }
+
+                var collisionProbability = (double)collisionsCount / count;
+                var oneCollisionProbability = collisionProbability / count;
+
+                TestContext.WriteLine($@"One collision probability is {
+                    oneCollisionProbability } and collision probability is {
+                    collisionProbability } when count is { count }");
+            }
+        }
+
+        [TestMethod]
+        public void GetHashCode_SequentialCollision_Test()
+        {
+            var random = new Random();
+            var collisionsCount = 0;
+
+            const int count = 100_000;
+
+            for (var i = 0; i < count; ++i)
+            {
+                var firstNext = random.Next().ToString();
+                var firstHashCode = firstNext.GetHashCode();
+
+                var secondNext = random.Next().ToString();
+                var secondHashCode = secondNext.GetHashCode();
+
+                if (firstHashCode == secondHashCode)
+                {
+                    ++collisionsCount;
+                }
+            }
+
+            var collisionProbability = (double)collisionsCount / count;
+
+            TestContext.WriteLine($@"Sequential collision probability is {
+                collisionProbability } when count is { count }");
+        }
     }
 }
