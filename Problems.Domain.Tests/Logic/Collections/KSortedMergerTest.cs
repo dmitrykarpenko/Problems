@@ -25,6 +25,10 @@ namespace Problems.Domain.Tests.Logic.Collections
         public void KSortedMergerWithSortedListWithDuplicateHashSets_MergeKLists_Test()
             => IKSortedMerger_MergeKLists_Test(new KSortedMergerWithSortedListWithDuplicateHashSets());
 
+        [TestMethod]
+        public void KSortedMergerWithTwoListMerge_MergeKLists_Test()
+            => IKSortedMerger_MergeKLists_Test(new KSortedMergerWithTwoListMerge());
+
         public void IKSortedMerger_MergeKLists_Test(IKSortedMerger kSortedMerger)
         {
             // Arrange:
