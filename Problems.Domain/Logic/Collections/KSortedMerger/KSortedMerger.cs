@@ -16,33 +16,35 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
                 return null;
             }
 
-            IPriorityQueue<ListNode> nodes = new IntervalHeap<ListNode>(
-                new ListNodeComparer());
-            //var nodes = new SortedSet<ListNode>(
+            //IPriorityQueue<ListNode> nodes = new IntervalHeap<ListNode>(
             //    new ListNodeComparer());
+            var nodes = new SortedList<ListNode, int>(
+                new ListNodeComparer());
 
             foreach (var list in lists)
             {
                 if (list != null)
                 {
-                    nodes.Add(list);
+                    //nodes.Add(list);
+                    nodes.Add(list, list.val);
                 }
             }
 
             ListNode current = null;
             ListNode result = null;
             while (
-                !nodes.IsEmpty
-                //nodes.Any()
+                //!nodes.IsEmpty
+                nodes.Any()
             )
             {
-                var nodesMin = nodes.DeleteMin();
-                //var nodesMin = nodes.Min;
-                //nodes.Remove(nodesMin);
+                //var nodesMin = nodes.DeleteMin();
+                var nodesMin = nodes.Keys[0];
+                nodes.RemoveAt(0);
 
                 if (nodesMin.next != null)
                 {
-                    nodes.Add(nodesMin.next);
+                    //nodes.Add(nodesMin.next);
+                    nodes.Add(nodesMin.next, nodesMin.next.val);
                 }
 
                 if (current != null)
@@ -70,22 +72,22 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
                 if (x == null || y == null)
                     throw new ArgumentException("Cannot compare to null");
 
-                return x.val - y.val;
+                //return x.val - y.val;
 
-                //if (x == y)
-                //{
-                //    return 0;
-                //}
+                if (x == y)
+                {
+                    return 0;
+                }
 
-                //var result = x.val - y.val;
+                var result = x.val - y.val;
 
-                //// allows saving duplicates in a SortedSet collection
-                //if (result == 0)
-                //{
-                //    result = 1;
-                //}
+                // allows saving duplicates in a SortedSet collection
+                if (result == 0)
+                {
+                    result = 1;
+                }
 
-                //return result;
+                return result;
             }
         }
 
