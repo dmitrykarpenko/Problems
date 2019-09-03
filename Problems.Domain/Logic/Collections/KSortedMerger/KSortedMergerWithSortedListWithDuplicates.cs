@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Problems.Domain.Logic.Collections.KSortedMerger
 {
-    public class KSortedMerger : IKSortedMerger
+    public class KSortedMergerWithSortedListWithDuplicates : IKSortedMerger
     {
         public ListNode MergeKLists(ListNode[] lists)
         {
@@ -15,9 +15,7 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
             {
                 return null;
             }
-
-            //IPriorityQueue<ListNode> nodes = new IntervalHeap<ListNode>(
-            //    new ListNodeComparer());
+            
             var nodes = new SortedList<ListNode, int>(
                 new ListNodeComparer());
 
@@ -25,25 +23,19 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
             {
                 if (list != null)
                 {
-                    //nodes.Add(list);
                     nodes.Add(list, list.val);
                 }
             }
 
             ListNode current = null;
             ListNode result = null;
-            while (
-                //!nodes.IsEmpty
-                nodes.Any()
-            )
+            while (nodes.Any())
             {
-                //var nodesMin = nodes.DeleteMin();
                 var nodesMin = nodes.Keys[0];
                 nodes.RemoveAt(0);
 
                 if (nodesMin.next != null)
                 {
-                    //nodes.Add(nodesMin.next);
                     nodes.Add(nodesMin.next, nodesMin.next.val);
                 }
 
@@ -72,8 +64,6 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
                 if (x == null || y == null)
                     throw new ArgumentException("Cannot compare to null");
 
-                //return x.val - y.val;
-
                 if (x == y)
                 {
                     return 0;
@@ -90,19 +80,5 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
                 return result;
             }
         }
-
-        //private class Node : IComparable<Node>
-        //{
-        //    public int Value { get; set; }
-        //    public Node Next { get; set; }
-
-        //    public int CompareTo(Node other)
-        //    {
-        //        if (other == null)
-        //            throw new ArgumentException("Cannot compare to null");
-
-        //        return this.Value - other.Value;
-        //    }
-        //}
     }
 }

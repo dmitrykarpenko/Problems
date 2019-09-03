@@ -14,7 +14,15 @@ namespace Problems.Domain.Tests.Logic.Collections
     public class KSortedMergerTest
     {
         [TestMethod]
-        public void KSortedMerger_MergeKLists_Test()
+        public void KSortedMergerWithC5PriorityQueue_MergeKLists_Test()
+            => IKSortedMerger_MergeKLists_Test(new KSortedMergerWithC5PriorityQueue());
+
+        [TestMethod]
+        public void KSortedMergerWithSortedListWithDuplicates_MergeKLists_Test()
+            => IKSortedMerger_MergeKLists_Test(new KSortedMergerWithSortedListWithDuplicates());
+
+
+        public void IKSortedMerger_MergeKLists_Test(IKSortedMerger kSortedMerger)
         {
             // Arrange:
             var inputObjects = new[]
@@ -56,8 +64,6 @@ namespace Problems.Domain.Tests.Logic.Collections
                     Count = 0,
                 },
             };
-
-            IKSortedMerger kSortedMerger = new KSortedMerger();
 
             foreach (var inputObject in inputObjects)
             {
