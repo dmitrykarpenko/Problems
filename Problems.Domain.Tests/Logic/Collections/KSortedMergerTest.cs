@@ -14,7 +14,7 @@ namespace Problems.Domain.Tests.Logic.Collections
     public class KSortedMergerTest
     {
         [TestMethod]
-        public void ArrayShuffler_FisherYates_Test()
+        public void KSortedMerger_MergeKLists_Test()
         {
             // Arrange:
             var inputObjects = new[]
@@ -27,6 +27,7 @@ namespace Problems.Domain.Tests.Logic.Collections
                         new ListNode(1) { next = new ListNode(3) { next = new ListNode(3) { next = null } } },
                         new ListNode(2) { next = new ListNode(6) { next = null } },
                     },
+                    Count = 8,
                 },
                 new
                 {
@@ -36,6 +37,7 @@ namespace Problems.Domain.Tests.Logic.Collections
                         new ListNode(1) { next = new ListNode(1) { next = new ListNode(30) { next = null } } },
                         (ListNode)null,
                     },
+                    Count = 5,
                 },
                 new
                 {
@@ -46,10 +48,12 @@ namespace Problems.Domain.Tests.Logic.Collections
                         (ListNode)null,
                         new ListNode(1),
                     },
+                    Count = 3,
                 },
                 new
                 {
                     Input = new ListNode[0],
+                    Count = 0,
                 },
             };
 
@@ -72,6 +76,7 @@ namespace Problems.Domain.Tests.Logic.Collections
                 var pairs = outputArray.Zip(orderedOutputArray, (oi, si) => new { oi, si });
                 foreach (var pair in pairs)
                 {
+                    Assert.AreEqual(inputObject.Count, outputArray.Length, "Output does not have all the elements: " + output);
                     Assert.AreEqual(pair.si?.val, pair.oi?.val, "Output is not sorted: " + output);
                 }
             }

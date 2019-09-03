@@ -18,6 +18,8 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
 
             IPriorityQueue<ListNode> nodes = new IntervalHeap<ListNode>(
                 new ListNodeComparer());
+            //var nodes = new SortedSet<ListNode>(
+            //    new ListNodeComparer());
 
             foreach (var list in lists)
             {
@@ -29,9 +31,15 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
 
             ListNode current = null;
             ListNode result = null;
-            while (!nodes.IsEmpty)
+            while (
+                !nodes.IsEmpty
+                //nodes.Any()
+            )
             {
                 var nodesMin = nodes.DeleteMin();
+                //var nodesMin = nodes.Min;
+                //nodes.Remove(nodesMin);
+
                 if (nodesMin.next != null)
                 {
                     nodes.Add(nodesMin.next);
@@ -63,6 +71,21 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
                     throw new ArgumentException("Cannot compare to null");
 
                 return x.val - y.val;
+
+                //if (x == y)
+                //{
+                //    return 0;
+                //}
+
+                //var result = x.val - y.val;
+
+                //// allows saving duplicates in a SortedSet collection
+                //if (result == 0)
+                //{
+                //    result = 1;
+                //}
+
+                //return result;
             }
         }
 
