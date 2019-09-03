@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,10 +25,47 @@ namespace Problems.Domain.Logic.Collections.KSortedMerger
         ListNode MergeKLists(ListNode[] lists);
     }
 
-    public class ListNode
+    public class ListNode : IEnumerable<ListNode>
     {
+        public ListNode(int x)
+        {
+            val = x;
+        }
+
         public int val;
         public ListNode next;
-        public ListNode(int x) { val = x; }
+
+        #region Custom
+
+        public override string ToString()
+        {
+            const string arrow = " -> ";
+            var sb = new StringBuilder();
+            var current = this;
+            while (current != null)
+            {
+                sb.Append(current.val).Append(arrow);
+                current = current.next;
+            }
+            sb.Length -= arrow.Length;
+            return sb.ToString();
+        }
+
+        public IEnumerator<ListNode> GetEnumerator()
+        {
+            var current = this;
+            while (current != null)
+            {
+                yield return current;
+                current = current.next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
